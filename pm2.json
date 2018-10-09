@@ -1,0 +1,10 @@
+{
+  "apps": [
+    {
+      "name": "index",
+      "script": "index.py",
+      "interpreter": "python",
+      "interpreter_args": "-u"
+    }
+  ]
+}
