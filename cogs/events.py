@@ -33,7 +33,7 @@ class Events:
 
             _traceback = traceback.format_tb(err.__traceback__)
             _traceback = ''.join(_traceback)
-            error = ('```py\n{2}{0}: {3}\n```').format(type(err).__name__, ctx.message.content, _traceback, err)
+            error = '```py\n{2}{0}: {3}\n```'.format(type(err).__name__, ctx.message.content, _traceback, err)
             logchannel = self.bot.get_channel(499327315088769025)
 
             await logchannel.send(f"`ERROR`\n{error}")
@@ -52,18 +52,19 @@ class Events:
         if not hasattr(self.bot, 'uptime'):
             self.bot.uptime = datetime.utcnow()
 
-        print(f'Ready: {self.bot.user} | Servers: {len(self.bot.guilds)}\nInvite with: https://discordapp.com/api/oauth2/authorize?client_id={self.bot.user.id}&permissions=8&scope=bot')
+        print(f'Ready: {self.bot.user} | Servers: {len(self.bot.guilds)}')
         await self.bot.change_presence(activity=discord.Game(type=0, name=self.config.playing), status=discord.Status.online)
 
-    async def on_member_join(member):
+    async def on_member_join(self, member):
         joinleave = self.bot.get_channel(445819554640429067)
 
         await joinleave.send(f"Welcome {member} to the society!")
 
-    async def on_member_remove(member):
+    async def on_member_remove(self, member):
         joinleave = self.bot.get_channel(445819554640429067)
 
         await joinleave.send(f"{member} left the society..")
 
 def setup(bot):
     bot.add_cog(Events(bot))
+
