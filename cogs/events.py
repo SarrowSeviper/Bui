@@ -58,12 +58,12 @@ class Events:
     async def on_member_join(self, member):
         joinleave = self.bot.get_channel(445819554640429067)
 
-        await joinleave.send(f"Welcome {member} to the society!")
+        await joinleave.send(f"Welcome {member} ({member.id}) (<@{member.id}>) to the society!")
 
     async def on_member_remove(self, member):
         joinleave = self.bot.get_channel(445819554640429067)
 
-        await joinleave.send(f"{member} left the society..")
+        await joinleave.send(f"{member} ({member.id}) (<@{member.id}>) left the society..")
 
 def setup(bot):
     bot.add_cog(Events(bot))
