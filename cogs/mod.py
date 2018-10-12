@@ -123,7 +123,7 @@ class Moderator:
     @commands.guild_only()
     @permissions.has_permissions(manage_roles=True)
     async def unmute(self, ctx, member: discord.Member, *, reason: str = None):
-        """ Mutes a user from the current server. """
+        """ Unmutes a user from the current server. """
         message = []
         for role in ctx.guild.roles:
             if role.name == "Muted":
@@ -224,11 +224,6 @@ class Moderator:
     async def images(self, ctx, search=100):
         """Removes messages that have embeds or attachments."""
         await self.do_removal(ctx, search, lambda e: len(e.embeds) or len(e.attachments))
-
-    @prune.command(name='all')
-    async def _remove_all(self, ctx, search=100):
-        """Removes all messages."""
-        await self.do_removal(ctx, search, lambda e: True)
 
     @prune.command()
     async def user(self, ctx, member: discord.Member, search=100):
