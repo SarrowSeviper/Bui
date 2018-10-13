@@ -6,7 +6,7 @@ from utils import permissions, default
 
 config = default.get("config.json")
 description = """
-E
+A bot for the Bui's Art Society!
 """
 
 
