@@ -71,18 +71,6 @@ class Information:
 
     @commands.command()
     @commands.guild_only()
-    async def roles(self, ctx):
-        """ Get all roles in current server """
-        allroles = ""
-
-        for num, role in enumerate(sorted(ctx.guild.roles, reverse=True), start=1):
-            allroles += f"[{str(num).zfill(2)}] {role.id}\t{role.name}\t[ Users: {len(role.members)} ]\r\n"
-
-        data = BytesIO(allroles.encode('utf-8'))
-        await ctx.send(content=f"Roles in **{ctx.guild.name}**", file=discord.File(data, filename=f"{default.timetext('Roles')}"))
-
-    @commands.command()
-    @commands.guild_only()
     async def joinedat(self, ctx, user: discord.Member = None):
         """ Check when a user joined the current server """
         if user is None:
