@@ -1,6 +1,6 @@
 from utils import default
 
-version = "v1.3.0"
+version = "v1.0.0"
 invite = "https://discord.gg/bAE4QGy"
 owners = default.get("config.json").owners
 

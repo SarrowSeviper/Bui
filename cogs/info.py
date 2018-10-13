@@ -64,7 +64,7 @@ class Information:
         if user is None:
             user = ctx.author
 
-        embed = discord.Embed(colour=0x00ddff)
+        embed = discord.Embed(colour=0xFF8A00)
         embed.description = f"Avatar to **{user.name}**\nClick [here]({user.avatar_url}) to get image"
         embed.set_thumbnail(url=user.avatar_url)
         await ctx.send(embed=embed)
@@ -76,7 +76,7 @@ class Information:
         if user is None:
             user = ctx.author
 
-        embed = discord.Embed(colour=0x00ddff)
+        embed = discord.Embed(colour=0xFF8A00)
         embed.set_thumbnail(url=user.avatar_url)
         embed.description = f'**{user}** joined **{ctx.guild.name}**\n{default.date(user.joined_at)}'
         await ctx.send(embed=embed)
@@ -88,7 +88,7 @@ class Information:
         if ctx.invoked_subcommand is None:
             findbots = sum(1 for member in ctx.guild.members if member.bot)
 
-            embed = discord.Embed(colour=0x00ddff)
+            embed = discord.Embed(colour=0xFF8A00)
             embed.set_thumbnail(url=ctx.guild.icon_url)
             embed.add_field(name="Server Name", value=ctx.guild.name, inline=True)
             embed.add_field(name="Server ID", value=ctx.guild.id, inline=True)
@@ -105,7 +105,7 @@ class Information:
         if user is None:
             user = ctx.author
 
-        embed = discord.Embed(colour=0x00ddff)
+        embed = discord.Embed(colour=0xFF8A00)
         embed.set_thumbnail(url=user.avatar_url)
 
         embed.add_field(name="Full name", value=user, inline=True)
