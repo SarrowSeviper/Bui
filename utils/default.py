@@ -35,4 +35,4 @@ def actionmessage(case, mass=False):
     if mass is True:
         output = f"**{case}** the IDs/Users"
 
-    return f"👌"
+    return f"Done!"

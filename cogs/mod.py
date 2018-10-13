@@ -291,7 +291,7 @@ class Moderator:
         try:
             role = discord.utils.get(ctx.guild.roles, name=rolename)
             await member.add_roles(role)
-            await ctx.send(f"👌 I have given **{member.name}** the **{role.name}** role!")
+            await ctx.send(f"I have given **{member.name}** the **{role.name}** role!")
         except:
             return
 
@@ -303,7 +303,7 @@ class Moderator:
         try:
             role = discord.utils.get(ctx.guild.roles, name=rolename)
             await member.remove_roles(role)
-            await ctx.send(f"👌 I have removed **{member.name}** from the **{role.name}** role!")
+            await ctx.send(f"I have removed **{member.name}** from the **{role.name}** role!")
         except:
             return
 
