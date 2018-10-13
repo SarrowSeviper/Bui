@@ -286,7 +286,7 @@ class Moderator:
     @commands.command()
     @commands.guild_only()
     @permissions.has_permissions(manage_roles=True)
-    async def giverole(self, ctx, member: discord.Member, *, rolename: str = None):
+    async def ra(self, ctx, member: discord.Member, *, rolename: str = None):
         """ Gives the role to the user. """
         try:
             role = discord.utils.get(ctx.guild.roles, name=rolename)
@@ -298,7 +298,7 @@ class Moderator:
     @commands.command()
     @commands.guild_only()
     @permissions.has_permissions(manage_roles=True)
-    async def removerole(self, ctx, member: discord.Member, *, rolename: str = None):
+    async def rr(self, ctx, member: discord.Member, *, rolename: str = None):
         """ Removes the role from a user. """
         try:
             role = discord.utils.get(ctx.guild.roles, name=rolename)
