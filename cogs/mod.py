@@ -47,7 +47,9 @@ class Moderator:
         """ Kicks a user from the current server. """
         try:
             await member.kick(reason=default.responsible(ctx.author, reason))
-            await ctx.send(default.actionmessage("kicked"))
+            loggingchan = self.bot.get_channel(499327315088769025)
+            await ctx.send(default.actionmessage("kicked", member))
+            await loggingchan.send(default.actionmessage("kicked", member))
         except Exception as e:
             await ctx.send(e)
 
@@ -68,34 +70,13 @@ class Moderator:
     @commands.command()
     @commands.guild_only()
     @permissions.has_permissions(ban_members=True)
-    async def ban(self, ctx, member: MemberID, *, reason: str = None):
+    async def ban(self, ctx, member: discord.member, *, reason: str = None):
         """ Bans a user from the current server. """
         try:
             await ctx.guild.ban(discord.Object(id=member), reason=default.responsible(ctx.author, reason))
-            await ctx.send(default.actionmessage("banned"))
-        except Exception as e:
-            await ctx.send(e)
-
-    @commands.command()
-    @commands.guild_only()
-    @permissions.has_permissions(ban_members=True)
-    async def softban(self, ctx, member: MemberID, *, reason: str = None):
-        """ Bans a user from the current server, then unbans them again. """
-        try:
-            await ctx.guild.ban(discord.Object(id=member), reason=default.responsible(ctx.author, reason))
-            await ctx.guild.unban(discord.Object(id=member), reason=default.responsible(ctx.author, reason))
-            await ctx.send(default.actionmessage("softbanned"))
-        except Exception as e:
-            await ctx.send(e)
-
-    @commands.command()
-    @commands.guild_only()
-    @permissions.has_permissions(ban_members=True)
-    async def unban(self, ctx, member: MemberID, *, reason: str = None):
-        """ Bans a user from the current server. """
-        try:
-            await ctx.guild.unban(discord.Object(id=member), reason=default.responsible(ctx.author, reason))
-            await ctx.send(default.actionmessage("unbanned"))
+            loggingchan = self.bot.get_channel(499327315088769025)
+            await ctx.send(default.actionmessage("banned", member))
+            await loggingchan.send(default.actionmessage("banned", member))
         except Exception as e:
             await ctx.send(e)
 
@@ -115,7 +96,9 @@ class Moderator:
 
         try:
             await member.add_roles(therole, reason=default.responsible(ctx.author, reason))
-            await ctx.send(default.actionmessage("muted"))
+            loggingchan = self.bot.get_channel(499327315088769025)
+            await ctx.send(default.actionmessage("muted", member))
+            await loggingchan.send(default.actionmessage("muted", member))
         except Exception as e:
             await ctx.send(e)
 
@@ -135,7 +118,9 @@ class Moderator:
 
         try:
             await member.remove_roles(therole, reason=default.responsible(ctx.author, reason))
-            await ctx.send(default.actionmessage("unmuted"))
+            loggingchan = self.bot.get_channel(499327315088769025)
+            await ctx.send(default.actionmessage("unmuted", member))
+            await loggingchan.send(default.actionmessage("unmuted", member))
         except Exception as e:
             await ctx.send(e)
 
@@ -290,8 +275,10 @@ class Moderator:
         """ Gives the role to the user. """
         try:
             role = discord.utils.get(ctx.guild.roles, name=rolename)
+            loggingchan = self.bot.get_channel(499327315088769025)
             await member.add_roles(role)
             await ctx.send(f"I have given **{member.name}** the **{role.name}** role!")
+            await loggingchan.send(f"Given **{member.name}** the **{role.name}** role")
         except:
             return
 
@@ -302,8 +289,10 @@ class Moderator:
         """ Removes the role from a user. """
         try:
             role = discord.utils.get(ctx.guild.roles, name=rolename)
+            loggingchan = self.bot.get_channel(499327315088769025)
             await member.remove_roles(role)
             await ctx.send(f"I have removed **{member.name}** from the **{role.name}** role!")
+            await loggingchan.send(f"Removed **{member.name}** from the **{role.name}** role")
         except:
             return
 

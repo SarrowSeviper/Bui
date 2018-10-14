@@ -1,5 +1,6 @@
 import time
 import json
+import discord
 
 from collections import namedtuple
 
@@ -29,10 +30,10 @@ def responsible(target, reason):
     return f"{responsible} {reason}"
 
 
-def actionmessage(case, mass=False):
-    output = f"{case} the user"
+def actionmessage(case, member: discord.Member, mass=False):
+    output = f"{case} **{member.name}** (**{member.id}**)"
 
     if mass is True:
         output = f"**{case}** the IDs/Users"
 
-    return f"Done!"
+    return f"Successfully {output}"
