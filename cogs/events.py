@@ -34,7 +34,7 @@ class Events:
             _traceback = traceback.format_tb(err.__traceback__)
             _traceback = ''.join(_traceback)
             error = '```py\n{2}{0}: {3}\n```'.format(type(err).__name__, ctx.message.content, _traceback, err)
-            logchannel = self.bot.get_channel(499327315088769025)
+            logchannel = self.bot.get_channel(497864803172220939)
 
             await logchannel.send(f"`ERROR`\n{error}")
             await ctx.send("There was an error in processing the command, our staff have been notified and will be in contact soon.")
@@ -64,6 +64,7 @@ class Events:
         joinleave = self.bot.get_channel(445819554640429067)
 
         await joinleave.send(f"{member} ({member.id}) (<@{member.id}>) left the society..")
+
 
 def setup(bot):
     bot.add_cog(Events(bot))
