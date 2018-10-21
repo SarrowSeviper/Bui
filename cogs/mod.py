@@ -47,7 +47,7 @@ class Moderator:
         """ Kicks a user from the current server. """
         try:
             await member.kick(reason=default.responsible(ctx.author, reason))
-            loggingchan = self.bot.get_channel(499327315088769025)
+            loggingchan = self.bot.get_channel(497864803172220939)
             await ctx.send(default.actionmessage("kicked", member))
             await loggingchan.send(default.actionmessage("kicked", member))
         except Exception as e:
@@ -74,7 +74,7 @@ class Moderator:
         """ Bans a user from the current server. """
         try:
             await ctx.guild.ban(discord.Object(id=member), reason=default.responsible(ctx.author, reason))
-            loggingchan = self.bot.get_channel(499327315088769025)
+            loggingchan = self.bot.get_channel(497864803172220939)
             await ctx.send(default.actionmessage("banned", member))
             await loggingchan.send(default.actionmessage("banned", member))
         except Exception as e:
@@ -96,7 +96,7 @@ class Moderator:
 
         try:
             await member.add_roles(therole, reason=default.responsible(ctx.author, reason))
-            loggingchan = self.bot.get_channel(499327315088769025)
+            loggingchan = self.bot.get_channel(497864803172220939)
             await ctx.send(default.actionmessage("muted", member))
             await loggingchan.send(default.actionmessage("muted", member))
         except Exception as e:
@@ -118,7 +118,7 @@ class Moderator:
 
         try:
             await member.remove_roles(therole, reason=default.responsible(ctx.author, reason))
-            loggingchan = self.bot.get_channel(499327315088769025)
+            loggingchan = self.bot.get_channel(497864803172220939)
             await ctx.send(default.actionmessage("unmuted", member))
             await loggingchan.send(default.actionmessage("unmuted", member))
         except Exception as e:
@@ -141,8 +141,7 @@ class Moderator:
         if len(result) == 0:
             return await ctx.send("Your search result was empty...")
         data = BytesIO(''.join(result).encode('utf-8'))
-        await ctx.send(content=f"Found **{len(result)}** on your search for **{search}**",
-                       file=discord.File(data, filename=default.timetext(f'PlayingSearch')))
+        await ctx.send(content=f"Found **{len(result)}** on your search for **{search}**", file=discord.File(data, filename=default.timetext(f'PlayingSearch')))
 
     @find.command(name="username", aliases=["name"])
     async def find_name(self, ctx, *, search: str):
@@ -275,7 +274,7 @@ class Moderator:
         """ Gives the role to the user. """
         try:
             role = discord.utils.get(ctx.guild.roles, name=rolename)
-            loggingchan = self.bot.get_channel(499327315088769025)
+            loggingchan = self.bot.get_channel(497864803172220939)
             await member.add_roles(role)
             await ctx.send(f"I have given **{member.name}** the **{role.name}** role!")
             await loggingchan.send(f"Given **{member.name}** the **{role.name}** role")
@@ -289,7 +288,7 @@ class Moderator:
         """ Removes the role from a user. """
         try:
             role = discord.utils.get(ctx.guild.roles, name=rolename)
-            loggingchan = self.bot.get_channel(499327315088769025)
+            loggingchan = self.bot.get_channel(497864803172220939)
             await member.remove_roles(role)
             await ctx.send(f"I have removed **{member.name}** from the **{role.name}** role!")
             await loggingchan.send(f"Removed **{member.name}** from the **{role.name}** role")
