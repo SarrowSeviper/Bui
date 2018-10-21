@@ -1,5 +1,4 @@
 import time
-import subprocess
 import aiohttp
 import discord
 
@@ -122,6 +121,19 @@ class Admin:
             await ctx.send("This URL does not contain a useable image")
         except discord.HTTPException as err:
             await ctx.send(err)
+
+    @commands.command()
+    @commands.check(repo.is_owner)
+    async def args(self, ctx, *args):
+        """Returns the number of args"""
+        await ctx.send('{} arguments: {}'.format(len(args), ', '.join(args)))
+
+    @commands.command()
+    async def amiadmin(self, ctx):
+        """ Are you admin? """
+        if ctx.author.id in self.config.owners:
+            return await ctx.send(f"Yes **{ctx.author.name}** you are admin! ✅")
+        await ctx.send(f"no, heck off {ctx.author.name}")
 
 
 def setup(bot):
