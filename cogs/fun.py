@@ -1,4 +1,3 @@
-
 from discord.ext import commands
 from utils import default
 
@@ -47,6 +46,7 @@ class Fun_Commands:
         """
         await ctx.message.delete()
         await ctx.send("Stultus the sultana!")
+
 
 def setup(bot):
     bot.add_cog(Fun_Commands(bot))
