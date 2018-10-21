@@ -75,6 +75,227 @@ class Role_Distribution:
         await asyncio.sleep(5)
         await msg.delete()
 
+    @iam.command(name="drawpile")
+    async def iam_drawpile(self, ctx):
+        """
+        - Gives the Drawpile role
+        """
+
+        message = []
+        for role in ctx.guild.roles:
+            if role.name == "testing":
+                message.append(role.id)
+        try:
+            therole = discord.Object(id=message[0])
+        except:
+            return
+
+        await ctx.author.add_roles(therole)
+        await ctx.message.delete()
+        msg = await ctx.send(f"**{ctx.author.name}**, I have given you the **Drawpile** role!")
+        await asyncio.sleep(5)
+        await msg.delete()
+
+    @iam.command(name="inktober")
+    async def iam_inktober(self, ctx):
+        """
+        - Gives the Inktober role
+        """
+
+        message = []
+        for role in ctx.guild.roles:
+            if role.name == "testing":
+                message.append(role.id)
+        try:
+            therole = discord.Object(id=message[0])
+        except:
+            return
+
+        await ctx.author.add_roles(therole)
+        await ctx.message.delete()
+        msg = await ctx.send(f"**{ctx.author.name}**, I have given you the **Inktober** role!")
+        await asyncio.sleep(5)
+        await msg.delete()
+
+    @iam.command(name="artpg")
+    async def iam_artpg(self, ctx):
+        """
+        - Gives the ArtPG role
+        """
+
+        message = []
+        for role in ctx.guild.roles:
+            if role.name == "testing":
+                message.append(role.id)
+        try:
+            therole = discord.Object(id=message[0])
+        except:
+            return
+
+        await ctx.author.add_roles(therole)
+        await ctx.message.delete()
+        msg = await ctx.send(f"**{ctx.author.name}**, I have given you the **ArtPG** role!")
+        await asyncio.sleep(5)
+        await msg.delete()
+
+    @iam.command(name="event")
+    async def iam_event(self, ctx):
+        """
+        - Gives the Event role
+        """
+
+        message = []
+        for role in ctx.guild.roles:
+            if role.name == "testing":
+                message.append(role.id)
+        try:
+            therole = discord.Object(id=message[0])
+        except:
+            return
+
+        await ctx.author.add_roles(therole)
+        await ctx.message.delete()
+        msg = await ctx.send(f"**{ctx.author.name}**, I have given you the **Event** role!")
+        await asyncio.sleep(5)
+        await msg.delete()
+
+    @commands.group()
+    async def iamnot(self, ctx):
+        """
+        Used for un-assigning roles to yourself!
+        """
+        if ctx.invoked_subcommand is None:
+            _help = await ctx.bot.formatter.format_help_for(ctx, ctx.command)
+
+            for page in _help:
+                await ctx.send(page)
+
+    @iamnot.command(name="nsfw")
+    async def iamnot_advertising(self, ctx):
+        """
+        - Removes the NSFW role
+        """
+
+        message = []
+        for role in ctx.guild.roles:
+            if role.name == "testing":
+                message.append(role.id)
+        try:
+            therole = discord.Object(id=message[0])
+        except:
+            return
+
+        await ctx.author.remove_roles(therole)
+        await ctx.message.delete()
+        msg = await ctx.send(f"**{ctx.author.name}**, I have removed you from the **NSFW** role!")
+        await asyncio.sleep(5)
+        await msg.delete()
+
+    @iamnot.command(name="advertising")
+    async def iamnot_advertising(self, ctx):
+        """
+        - Removes the Advertising role
+        """
+
+        message = []
+        for role in ctx.guild.roles:
+            if role.name == "testing":
+                message.append(role.id)
+        try:
+            therole = discord.Object(id=message[0])
+        except:
+            return
+
+        await ctx.author.remove_roles(therole)
+        await ctx.message.delete()
+        msg = await ctx.send(f"**{ctx.author.name}**, I have removed you from the **Advertising** role!")
+        await asyncio.sleep(5)
+        await msg.delete()
+
+    @iamnot.command(name="drawpile")
+    async def iamnot_drawpile(self, ctx):
+        """
+        - Removes the Drawpile role
+        """
+
+        message = []
+        for role in ctx.guild.roles:
+            if role.name == "testing":
+                message.append(role.id)
+        try:
+            therole = discord.Object(id=message[0])
+        except:
+            return
+
+        await ctx.author.remove_roles(therole)
+        await ctx.message.delete()
+        msg = await ctx.send(f"**{ctx.author.name}**, I have removed you from the **Drawpile** role!")
+        await asyncio.sleep(5)
+        await msg.delete()
+
+    @iamnot.command(name="inktober")
+    async def iamnot_inktober(self, ctx):
+        """
+        - Removes the Inktober role
+        """
+
+        message = []
+        for role in ctx.guild.roles:
+            if role.name == "testing":
+                message.append(role.id)
+        try:
+            therole = discord.Object(id=message[0])
+        except:
+            return
+
+        await ctx.author.remove_roles(therole)
+        await ctx.message.delete()
+        msg = await ctx.send(f"**{ctx.author.name}**, I have removed you from the **Inktober** role!")
+        await asyncio.sleep(5)
+        await msg.delete()
+
+    @iamnot.command(name="artpg")
+    async def iamnot_artpg(self, ctx):
+        """
+        - Removes the ArtPG role
+        """
+
+        message = []
+        for role in ctx.guild.roles:
+            if role.name == "testing":
+                message.append(role.id)
+        try:
+            therole = discord.Object(id=message[0])
+        except:
+            return
+
+        await ctx.author.remove_roles(therole)
+        await ctx.message.delete()
+        msg = await ctx.send(f"**{ctx.author.name}**, I have removed you from the **ArtPG** role!")
+        await asyncio.sleep(5)
+        await msg.delete()
+
+    @iamnot.command(name="event")
+    async def iamnot_event(self, ctx):
+        """
+        - Removes the Event role
+        """
+
+        message = []
+        for role in ctx.guild.roles:
+            if role.name == "testing":
+                message.append(role.id)
+        try:
+            therole = discord.Object(id=message[0])
+        except:
+            return
+
+        await ctx.author.remove_roles(therole)
+        await ctx.message.delete()
+        msg = await ctx.send(f"**{ctx.author.name}**, I have removed you from the **Event** role!")
+        await asyncio.sleep(5)
+        await msg.delete()
+
 
 def setup(bot):
     bot.add_cog(Role_Distribution(bot))
