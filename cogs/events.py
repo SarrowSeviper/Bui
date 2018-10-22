@@ -34,7 +34,7 @@ class Events:
             _traceback = traceback.format_tb(err.__traceback__)
             _traceback = ''.join(_traceback)
             error = '```py\n{2}{0}: {3}\n```'.format(type(err).__name__, ctx.message.content, _traceback, err)
-            logchannel = self.bot.get_channel(497864803172220939)
+            logchannel = self.bot.get_channel(499327315088769025)
 
             await logchannel.send(f"`ERROR`\n{error}")
             await ctx.send("There was an error in processing the command, our staff have been notified and will be in contact soon.")
