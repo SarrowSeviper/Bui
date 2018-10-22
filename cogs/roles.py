@@ -171,7 +171,7 @@ class Role_Distribution:
                 await ctx.send(page)
 
     @iamnot.command(name="nsfw")
-    async def iamnot_advertising(self, ctx):
+    async def iamnot_nsfw(self, ctx):
         """
         - Removes the NSFW role
         """
