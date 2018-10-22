@@ -43,7 +43,7 @@ class Role_Distribution:
             await msg.delete()
             message = []
             for role in ctx.guild.roles:
-                if role.name == "testing":
+                if role.name == "NSFW":
                     message.append(role.id)
             try:
                 therole = discord.Object(id=message[0])
@@ -62,7 +62,7 @@ class Role_Distribution:
 
         message = []
         for role in ctx.guild.roles:
-            if role.name == "testing":
+            if role.name == "Advertising":
                 message.append(role.id)
         try:
             therole = discord.Object(id=message[0])
@@ -83,7 +83,7 @@ class Role_Distribution:
 
         message = []
         for role in ctx.guild.roles:
-            if role.name == "testing":
+            if role.name == "Drawpile":
                 message.append(role.id)
         try:
             therole = discord.Object(id=message[0])
@@ -104,7 +104,7 @@ class Role_Distribution:
 
         message = []
         for role in ctx.guild.roles:
-            if role.name == "testing":
+            if role.name == "Inktober":
                 message.append(role.id)
         try:
             therole = discord.Object(id=message[0])
@@ -125,7 +125,7 @@ class Role_Distribution:
 
         message = []
         for role in ctx.guild.roles:
-            if role.name == "testing":
+            if role.name == "ArtPG":
                 message.append(role.id)
         try:
             therole = discord.Object(id=message[0])
@@ -146,7 +146,7 @@ class Role_Distribution:
 
         message = []
         for role in ctx.guild.roles:
-            if role.name == "testing":
+            if role.name == "Event":
                 message.append(role.id)
         try:
             therole = discord.Object(id=message[0])
@@ -178,7 +178,7 @@ class Role_Distribution:
 
         message = []
         for role in ctx.guild.roles:
-            if role.name == "testing":
+            if role.name == "NSFW":
                 message.append(role.id)
         try:
             therole = discord.Object(id=message[0])
@@ -199,7 +199,7 @@ class Role_Distribution:
 
         message = []
         for role in ctx.guild.roles:
-            if role.name == "testing":
+            if role.name == "Advertising":
                 message.append(role.id)
         try:
             therole = discord.Object(id=message[0])
@@ -220,7 +220,7 @@ class Role_Distribution:
 
         message = []
         for role in ctx.guild.roles:
-            if role.name == "testing":
+            if role.name == "Drawpile":
                 message.append(role.id)
         try:
             therole = discord.Object(id=message[0])
@@ -241,7 +241,7 @@ class Role_Distribution:
 
         message = []
         for role in ctx.guild.roles:
-            if role.name == "testing":
+            if role.name == "Inktober":
                 message.append(role.id)
         try:
             therole = discord.Object(id=message[0])
@@ -262,7 +262,7 @@ class Role_Distribution:
 
         message = []
         for role in ctx.guild.roles:
-            if role.name == "testing":
+            if role.name == "ArtPG":
                 message.append(role.id)
         try:
             therole = discord.Object(id=message[0])
@@ -283,7 +283,7 @@ class Role_Distribution:
 
         message = []
         for role in ctx.guild.roles:
-            if role.name == "testing":
+            if role.name == "Event":
                 message.append(role.id)
         try:
             therole = discord.Object(id=message[0])
