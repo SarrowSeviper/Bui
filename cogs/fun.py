@@ -15,6 +15,15 @@ class Fun_Commands:
         t_echo = text.replace("@", "@\u200B").replace("&", "&\u200B")
         await ctx.send(f"{t_echo}")
 
+    @commands.command()
+    async def echo(self, ctx, *, text: str):
+        """
+        Whatever you say!
+        """
+        await ctx.message.delete()
+        t_echo = text.replace("@", "@\u200B").replace("&", "&\u200B")
+        await ctx.send(f"{t_echo}")
+
     @commands.command(hidden=True)
     async def cinder(self, ctx):
         """
