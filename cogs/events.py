@@ -56,9 +56,12 @@ class Events:
         await self.bot.change_presence(activity=discord.Game(type=0, name=self.config.playing), status=discord.Status.online)
 
     async def on_member_join(self, member):
-        joinleave = self.bot.get_channel(445819554640429067)
+        if "discord.gg" in member.name:
+            await member.kick()
+        else:
+            joinleave = self.bot.get_channel(445819554640429067)
 
-        await joinleave.send(f"Welcome {member} ({member.id}) (<@{member.id}>) to the society!")
+            await joinleave.send(f"Welcome {member} ({member.id}) (<@{member.id}>) to the society!")
 
     async def on_member_remove(self, member):
         joinleave = self.bot.get_channel(445819554640429067)
