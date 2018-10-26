@@ -16,7 +16,7 @@ class Fun_Commands:
         await ctx.send(f"{t_echo}")
 
     @commands.command()
-    async def echo(self, ctx, *, text: str):
+    async def say(self, ctx, *, text: str):
         """
         Whatever you say!
         """
