@@ -56,7 +56,7 @@ class Events:
         await self.bot.change_presence(activity=discord.Game(type=0, name=self.config.playing), status=discord.Status.online)
 
     async def on_member_join(self, member):
-        if member.guild.id is not "445647188685619232":
+        if member.guild.id != 445647188685619232:
             return
         else:
             if "discord.gg" in member.name:
@@ -64,15 +64,15 @@ class Events:
             else:
                 joinleave = self.bot.get_channel(445819554640429067)
 
-                await joinleave.send(f"Welcome {member} ({member.id}) (<@{member.id}>) to the society!")
+                await joinleave.send(f"Welcome {member} ({member.id}) ({member.mention}) to the society!")
 
     async def on_member_remove(self, member):
-        if member.guild.id is not "445647188685619232":
+        if member.guild.id != 445647188685619232:
             return
         else:
             joinleave = self.bot.get_channel(445819554640429067)
 
-            await joinleave.send(f"{member} ({member.id}) (<@{member.id}>) left the society..")
+            await joinleave.send(f"{member} ({member.id}) ({member.mention}) left the society..")
 
 
 def setup(bot):
