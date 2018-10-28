@@ -62,6 +62,7 @@ class Fun_Commands:
         """
         Creates a poll
         """
+        await ctx.message.delete()
         time = int(time)
         pollmsg = await ctx.send(f"{ctx.message.author.mention} created a poll that will end after {time} seconds!\n**{question}**\n\nReact with :thumbsup: or :thumbsdown: to vote!")
         await pollmsg.add_reaction('👍')
