@@ -1,6 +1,7 @@
 from discord.ext import commands
 from utils import default
 
+import asyncio
 
 class Fun_Commands:
     def __init__(self, bot):
@@ -55,6 +56,27 @@ class Fun_Commands:
         """
         await ctx.message.delete()
         await ctx.send("Stultus the sultana!")
+
+    @commands.command()
+    async def poll(self, ctx, time, *, question):
+        """
+        Creates a poll
+        """
+        time = int(time)
+        pollmsg = await ctx.send(f"{ctx.message.author.mention} created a poll that will end after {time} seconds!\n**{question}**\n\nReact with :thumbsup: or :thumbsdown: to vote!")
+        await pollmsg.add_reaction('👍')
+        await pollmsg.add_reaction('👎')
+        await asyncio.sleep(time)
+        reactiongrab = await ctx.channel.get_message(pollmsg.id)
+        for reaction in reactiongrab.reactions:
+            if reaction.emoji == str('👍'):
+                upvote_count = reaction.count
+            else:
+                if reaction.emoji == str('👎'):
+                    downvote_count = reaction.count
+                else:
+                    pass
+        await pollmsg.edit(content=f"{ctx.message.author.mention} created a poll that will end after {time} seconds!\n**{question}**\n\nTime's up!\n👍 = {upvote_count-1}\n\n👎 = {downvote_count-1}")
 
 
 def setup(bot):
