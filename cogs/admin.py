@@ -136,6 +136,24 @@ class Admin:
             return await ctx.send(f"Yes **{ctx.author.name}** you are admin! ✅")
         await ctx.send(f"no, heck off {ctx.author.name}")
 
+    @commands.command()
+    @commands.guild_only()
+    @commands.check(repo.is_owner)
+    async def resetwarns(self, ctx, member: discord.Member):
+        """ Resets user warnings """
+        query = "SELECT warnings FROM warnings WHERE userid = $1;"
+        row = await self.bot.db.fetchrow(query, member.id)
+        if row is None:
+            await ctx.send("They are not registered in the database! I'll add them now!")
+            query = "INSERT INTO warnings VALUES ($1, 0);"
+            await self.bot.db.execute(query, member.id)
+        else:
+            query = "UPDATE warnings SET warnings = 0 WHERE userid = $1;"
+            await self.bot.db.execute(query, member.id)
+            logchannel = self.bot.get_channel(499327315088769025)
+            await ctx.send(f"I reset {member.mention}'s warns!")
+            await logchannel.send(f"I reset {member.mention}'s warns!")
+
 
 def setup(bot):
     bot.add_cog(Admin(bot))
