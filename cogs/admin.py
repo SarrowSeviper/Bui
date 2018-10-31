@@ -30,7 +30,7 @@ class Admin:
         """ Reboot the bot """
         await ctx.send('Rebooting now...')
         time.sleep(1)
-        await db.close()
+        await self.bot.db.close()
         await self.bot.logout()
 
     @commands.command()

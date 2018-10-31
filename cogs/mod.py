@@ -57,6 +57,27 @@ class Moderator:
 
     @commands.command()
     @commands.guild_only()
+    @permissions.has_permissions(ban_members=True)
+    async def warn(self, ctx, member: discord.Member, amount: int = None):
+        """ Gives a user a set amount of warnings """
+        query = "SELECT warnings FROM warnings WHERE userid = $1;"
+        row = await self.bot.db.fetchrow(query, member.id)
+        if row is None:
+            await ctx.send("They are not registered in the database! I'll add them now!")
+            query = "INSERT INTO warnings VALUES ($1, 0);"
+            await self.bot.db.execute(query, member.id)
+        else:
+            query = "SELECT warnings FROM warnings WHERE userid = $1;"
+            row = await self.bot.db.fetchrow(query, member.id)
+            amountgiven = int(row['warnings'] + amount)
+            query = "UPDATE warnings SET warnings = $1 WHERE userid = $2;"
+            await self.bot.db.execute(query, amount, member.id)
+            logchannel = self.bot.get_channel(499327315088769025)
+            await ctx.send(f"I added **{amount}** to {member.mention}'s warns! They now have **{amountgiven}**.")
+            await logchannel.send(f"I added **{amount}** to {member.mention}'s warns! They now have **{amountgiven}**.")
+
+    @commands.command()
+    @commands.guild_only()
     @permissions.has_permissions(kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason: str = None):
         """ Kicks a user from the current server. """
