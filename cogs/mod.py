@@ -44,6 +44,19 @@ class Moderator:
 
     @commands.command()
     @commands.guild_only()
+    async def warns(self, ctx):
+        """ Checks user warns """
+        query = "SELECT warnings FROM warnings WHERE userid = $1;"
+        row = await self.bot.db.fetchrow(query, ctx.author.id)
+        if row is None:
+            await ctx.send("You are not registered in the database! I'll add you now!")
+            query = "INSERT INTO warnings VALUES ($1, 0);"
+            await self.bot.db.execute(query, ctx.author.id)
+        else:
+            await ctx.send(f"You currently have **{row}** warnings.")
+
+    @commands.command()
+    @commands.guild_only()
     @permissions.has_permissions(kick_members=True)
     async def kick(self, ctx, member: discord.Member, *, reason: str = None):
         """ Kicks a user from the current server. """

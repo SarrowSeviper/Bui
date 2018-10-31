@@ -21,20 +21,19 @@ class HelpFormat(HelpFormatter):
 
 async def run():
     help_attrs = dict(hidden=True)
-    credentials = {"user": "BLANK", "password": "BLANK", "database": "BLANK", "host": "127.0.0.1"}
+    credentials = {"user": config.dbname, "password": config.dbpass, "database": config.database, "host": "127.0.0.1"}
     db = await asyncpg.create_pool(**credentials)
 
-    # Example create table code, you'll probably change it to suit you
-    await db.execute("CREATE TABLE IF NOT EXISTS warnings(userid int, warnings int);")
+    await db.execute("CREATE TABLE IF NOT EXISTS warnings(userid bigint, warnings int);")
 
     bot = Bot(command_prefix=config.prefix, prefix=config.prefix, pm_help=True, help_attrs=help_attrs, formatter=HelpFormat(), db=db)
     try:
-        await bot.start(config.token)
         print("Logging in...")
         for file in os.listdir("cogs"):
             if file.endswith(".py"):
                 name = file[:-3]
                 bot.load_extension(f"cogs.{name}")
+        await bot.start(config.token)
     except KeyboardInterrupt:
         await db.close()
         await bot.logout()
