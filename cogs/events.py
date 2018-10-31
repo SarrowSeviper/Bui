@@ -2,6 +2,7 @@ import discord
 import traceback
 import psutil
 import os
+import asyncpg
 
 from datetime import datetime
 from discord.ext.commands import errors

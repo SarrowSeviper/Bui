@@ -1,5 +1,7 @@
 import discord
 import re
+import asyncio
+import asyncpg
 
 from io import BytesIO
 from discord.ext import commands
