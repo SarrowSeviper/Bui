@@ -1,5 +1,7 @@
 import discord
 import re
+import asyncio
+import asyncpg
 
 from io import BytesIO
 from discord.ext import commands
@@ -39,6 +41,19 @@ class Moderator:
     def __init__(self, bot):
         self.bot = bot
         self.config = default.get("config.json")
+
+    @commands.command()
+    @commands.guild_only()
+    async def warns(self, ctx):
+        """ Checks user warns """
+        query = "SELECT warnings FROM warnings WHERE userid = $1;"
+        row = await self.bot.db.fetchrow(query, ctx.author.id)
+        if row is None:
+            await ctx.send("You are not registered in the database! I'll add you now!")
+            query = "INSERT INTO warnings VALUES ($1, 0);"
+            await self.bot.db.execute(query, ctx.author.id)
+        else:
+            await ctx.send(f"You currently have **{row}** warnings.")
 
     @commands.command()
     @commands.guild_only()
