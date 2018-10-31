@@ -53,7 +53,7 @@ class Moderator:
             query = "INSERT INTO warnings VALUES ($1, 0);"
             await self.bot.db.execute(query, ctx.author.id)
         else:
-            await ctx.send(f"You currently have **{row}** warnings.")
+            await ctx.send(f"You currently have **{row['warnings']}** warnings.")
 
     @commands.command()
     @commands.guild_only()
