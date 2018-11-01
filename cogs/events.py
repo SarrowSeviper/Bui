@@ -76,7 +76,7 @@ class Events:
             await joinleave.send(f"{member} ({member.id}) ({member.mention}) left the society..")
 
     async def on_reaction_add(self, reaction, user):
-        if reaction.message.channel.id == 423890150876250122 and reaction.message.attachments and not user.bot and not user.id == reaction.message.author.id and reaction.id == 507362047059689472:
+        if reaction.message.channel.id == 445658065933434892 and reaction.message.attachments and not user.bot and user.id != reaction.message.author.id and reaction.emoji.id == 507362047059689472:
             query = "SELECT * FROM artstats WHERE userid = $1;"
             row = await self.bot.db.fetchrow(query, reaction.message.author.id)
             if row is None:
@@ -88,9 +88,11 @@ class Events:
                 amountgiven = int(row['upvotes'] + 1)
                 query = "UPDATE artstats SET upvotes = $1 WHERE userid = $2;"
                 await self.bot.db.execute(query, amountgiven, reaction.message.author.id)
+        else:
+            pass
 
     async def on_reaction_remove(self, reaction, user):
-        if reaction.message.channel.id == 445658065933434892 and reaction.message.attachments and not user.bot and not user.id == reaction.message.author.id and reaction.id == 507362047059689472:
+        if reaction.message.channel.id == 445658065933434892 and reaction.message.attachments and not user.bot and user.id != reaction.message.author.id and reaction.emoji.id == 507362047059689472:
             query = "SELECT * FROM artstats WHERE userid = $1;"
             row = await self.bot.db.fetchrow(query, reaction.message.author.id)
             if row is None:
@@ -102,6 +104,8 @@ class Events:
                 amountgiven = int(row['upvotes'] - 1)
                 query = "UPDATE artstats SET upvotes = $1 WHERE userid = $2;"
                 await self.bot.db.execute(query, amountgiven, reaction.message.author.id)
+        else:
+            pass
 
 
 def setup(bot):
