@@ -75,6 +75,34 @@ class Events:
 
             await joinleave.send(f"{member} ({member.id}) ({member.mention}) left the society..")
 
+    async def on_reaction_add(self, reaction, user):
+        if reaction.message.channel.id == 423890150876250122 and reaction.message.attachments and not user.bot and not user.id == reaction.message.author.id:
+            query = "SELECT * FROM artstats WHERE userid = $1;"
+            row = await self.bot.db.fetchrow(query, reaction.message.author.id)
+            if row is None:
+                query = "INSERT INTO artstats VALUES ($1, 1);"
+                await self.bot.db.execute(query, reaction.message.author.id)
+            else:
+                query = "SELECT * FROM artstats WHERE userid = $1;"
+                row = await self.bot.db.fetchrow(query, reaction.message.author.id)
+                amountgiven = int(row['upvotes'] + 1)
+                query = "UPDATE artstats SET upvotes = $1 WHERE userid = $2;"
+                await self.bot.db.execute(query, amountgiven, reaction.message.author.id)
+
+    async def on_reaction_remove(self, reaction, user):
+        if reaction.message.channel.id == 445658065933434892 and reaction.message.attachments and not user.bot and not user.id == reaction.message.author.id:
+            query = "SELECT * FROM artstats WHERE userid = $1;"
+            row = await self.bot.db.fetchrow(query, reaction.message.author.id)
+            if row is None:
+                query = "INSERT INTO artstats VALUES ($1, 0);"
+                await self.bot.db.execute(query, reaction.message.author.id)
+            else:
+                query = "SELECT * FROM artstats WHERE userid = $1;"
+                row = await self.bot.db.fetchrow(query, reaction.message.author.id)
+                amountgiven = int(row['upvotes'] - 1)
+                query = "UPDATE artstats SET upvotes = $1 WHERE userid = $2;"
+                await self.bot.db.execute(query, amountgiven, reaction.message.author.id)
+
 
 def setup(bot):
     bot.add_cog(Events(bot))
