@@ -47,7 +47,7 @@ class Information:
         """ About the bot """
         ramUsage = self.process.memory_full_info().rss / 1024**2
 
-        embed = discord.Embed(colour=ctx.me.top_role.colour)
+        embed = discord.Embed(colour=0xFF8A00)
         embed.set_thumbnail(url=ctx.bot.user.avatar_url)
         embed.add_field(name="Uptime", value=self.get_bot_uptime(), inline=False)
         embed.add_field(name="Developer", value="Paws#0001", inline=True)
@@ -121,6 +121,23 @@ class Information:
             embed.add_field(name="Joined this server", value=default.date(user.joined_at), inline=True)
 
         await ctx.send(content=f"ℹ About **{user.id}**", embed=embed)
+
+    @commands.command()
+    async def me(self, ctx):
+        query = "SELECT * FROM artstats WHERE userid = $1;"
+        row = await self.bot.db.fetchrow(query, ctx.author.id)
+        if row is None:
+            query = "INSERT INTO artstats VALUES ($1, 0);"
+            await self.bot.db.execute(query, ctx.author.id)
+        else:
+            query = "SELECT * FROM artstats WHERE userid = $1;"
+            row = await self.bot.db.fetchrow(query, ctx.author.id)
+
+        embed = discord.Embed(colour=0xff8a00)
+        embed.set_author(name=f"{ctx.author.name}'s Stats", icon_url=f"{ctx.author.avatar_url}")
+        embed.add_field(name="<:upvote:507362047059689472> Upvotes", value=f"{row['upvotes']}", inline=True)
+        embed.add_field(name="💵 Balance", value="0", inline=True)
+        await ctx.send(embed=embed)
 
 
 def setup(bot):
