@@ -129,16 +129,16 @@ class Information:
         if row is None:
             query = "INSERT INTO artstats VALUES ($1, 0);"
             await self.bot.db.execute(query, ctx.author.id)
+            return ctx.send("I had to write you into the database! Please run this again!")
         else:
             query = "SELECT * FROM artstats WHERE userid = $1;"
             row = await self.bot.db.fetchrow(query, ctx.author.id)
 
-        embed = discord.Embed(colour=0xff8a00)
-        embed.set_author(name=f"{ctx.author.name}'s Stats", icon_url=f"{ctx.author.avatar_url}")
-        embed.add_field(name="<:upvote:507362047059689472> Upvotes", value=f"{row['upvotes']}", inline=True)
-        embed.add_field(name="💵 Balance", value="0", inline=True)
-        await ctx.send(embed=embed)
-
+            embed = discord.Embed(colour=0xff8a00)
+            embed.set_author(name=f"{ctx.author.name}'s Stats", icon_url=f"{ctx.author.avatar_url}")
+            embed.add_field(name="<:upvote:507362047059689472> Upvotes", value=f"{row['upvotes']}", inline=True)
+            embed.add_field(name="💵 Balance", value="0", inline=True)
+            await ctx.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(Information(bot))
