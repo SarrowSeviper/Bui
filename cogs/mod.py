@@ -96,9 +96,9 @@ class Moderator:
         """ Nicknames a user from the current server. """
         try:
             await member.edit(nick=name, reason=default.responsible(ctx.author, "Changed by command"))
-            message = f"👌 Changed **{member.name}'s** nickname to **{name}**"
+            message = f"Changed **{member.name}'s** nickname to **{name}**"
             if name is None:
-                message = f"👌 Reset **{member.name}'s** nickname"
+                message = f"Reset **{member.name}'s** nickname"
             await ctx.send(message)
         except Exception as e:
             await ctx.send(e)
