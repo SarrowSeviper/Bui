@@ -50,7 +50,7 @@ class Information:
         embed = discord.Embed(colour=0xFF8A00)
         embed.set_thumbnail(url=ctx.bot.user.avatar_url)
         embed.add_field(name="Uptime", value=self.get_bot_uptime(), inline=False)
-        embed.add_field(name="Developer", value="Paws#0001", inline=True)
+        embed.add_field(name="Developer", value="Paws#0001 & SarrowSeviper#4173", inline=True)
         embed.add_field(name="Library", value="discord.py", inline=True)
         embed.add_field(name="Commands loaded", value=len([x.name for x in self.bot.commands]), inline=True)
         embed.add_field(name="Servers", value=len(ctx.bot.guilds), inline=True)
