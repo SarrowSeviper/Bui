@@ -143,14 +143,14 @@ class Information:
     @commands.command()
     async def stats(self, ctx, member: discord.Member):
         query = "SELECT * FROM artstats WHERE userid = $1;"
-        row = await self.bot.db.fetchrow(query, ctx.author.id)
+        row = await self.bot.db.fetchrow(query, member.id)
         if row is None:
             query = "INSERT INTO artstats VALUES ($1, 0);"
-            await self.bot.db.execute(query, ctx.author.id)
+            await self.bot.db.execute(query, member.id)
             return await ctx.send("I had to write the user into the database! Please run this again!")
         else:
             query = "SELECT * FROM artstats WHERE userid = $1;"
-            row = await.self.bot.db.fetchrow(query, ctx.author.id)
+            row = await.self.bot.db.fetchrow(query, member.id)
 
             embed = discord.Embed(colour=0xff8aa00)
             embed.set_author(name=f"{member.name}'s Stats", icon_url=f"{member.avatar_url}")
