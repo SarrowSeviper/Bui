@@ -96,26 +96,6 @@ class Role_Distribution:
         await asyncio.sleep(5)
         await msg.delete()
 
-    @iam.command(name="inktober")
-    async def iam_inktober(self, ctx):
-        """
-        - Gives the Inktober role
-        """
-
-        message = []
-        for role in ctx.guild.roles:
-            if role.name == "Inktober":
-                message.append(role.id)
-        try:
-            therole = discord.Object(id=message[0])
-        except:
-            return
-
-        await ctx.author.add_roles(therole)
-        await ctx.message.delete()
-        msg = await ctx.send(f"**{ctx.author.name}**, I have given you the **Inktober** role!")
-        await asyncio.sleep(5)
-        await msg.delete()
 
     @iam.command(name="artpg")
     async def iam_artpg(self, ctx):
@@ -233,26 +213,6 @@ class Role_Distribution:
         await asyncio.sleep(5)
         await msg.delete()
 
-    @iamnot.command(name="inktober")
-    async def iamnot_inktober(self, ctx):
-        """
-        - Removes the Inktober role
-        """
-
-        message = []
-        for role in ctx.guild.roles:
-            if role.name == "Inktober":
-                message.append(role.id)
-        try:
-            therole = discord.Object(id=message[0])
-        except:
-            return
-
-        await ctx.author.remove_roles(therole)
-        await ctx.message.delete()
-        msg = await ctx.send(f"**{ctx.author.name}**, I have removed you from the **Inktober** role!")
-        await asyncio.sleep(5)
-        await msg.delete()
 
     @iamnot.command(name="artpg")
     async def iamnot_artpg(self, ctx):
