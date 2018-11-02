@@ -134,7 +134,7 @@ class Information:
             query = "SELECT * FROM artstats WHERE userid = $1;"
             row = await self.bot.db.fetchrow(query, ctx.author.id)
 
-            embed = discord.Embed(colour=0xff8a00)
+            embed = discord.Embed(colour=0xFF8A00)
             embed.set_author(name=f"{ctx.author.name}'s Stats", icon_url=f"{ctx.author.avatar_url}")
             embed.add_field(name="<:upvote:507362047059689472> Upvotes", value=f"{row['upvotes']}", inline=True)
             embed.add_field(name="💵 Balance", value="0", inline=True)
@@ -152,7 +152,7 @@ class Information:
             query = "SELECT * FROM artstats WHERE userid = $1;"
             row = await self.bot.db.fetchrow(query, member.id)
 
-            embed = discord.Embed(colour=0xff8aa00)
+            embed = discord.Embed(colour=0xFF8A00)
             embed.set_author(name=f"{member.name}'s Stats", icon_url=f"{member.avatar_url}")
             embed.add_field(name="<:upvote:507362047059689472> Upvotes", value=f"{row['upvotes']}", inline=True)
             embed.add_field(name="💵 Balance", value="0", inline=True)
