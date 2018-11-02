@@ -71,7 +71,7 @@ class Moderator:
             row = await self.bot.db.fetchrow(query, member.id)
             amountgiven = int(row['warnings'] + amount)
             query = "UPDATE warnings SET warnings = $1 WHERE userid = $2;"
-            await self.bot.db.execute(query, amount, member.id)
+            await self.bot.db.execute(query, amountgiven, member.id)
             logchannel = self.bot.get_channel(499327315088769025)
             await ctx.send(f"I added **{amount}** to {member.mention}'s warns! They now have **{amountgiven}**.")
             await logchannel.send(f"I added **{amount}** to {member.mention}'s warns! They now have **{amountgiven}**.")
