@@ -141,7 +141,7 @@ class Information:
             await ctx.send(embed=embed)
 
     @commands.command()
-    async def stats(self, ctx, member: discord.Member):
+    async def you(self, ctx, member: discord.Member):
         query = "SELECT * FROM artstats WHERE userid = $1;"
         row = await self.bot.db.fetchrow(query, member.id)
         if row is None:
