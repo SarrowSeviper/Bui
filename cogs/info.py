@@ -150,11 +150,11 @@ class Information:
             return await ctx.send("I had to write the user into the database! Please run this again!")
         else:
             query = "SELECT * FROM artstats WHERE userid = $1;"
-            row = await.self.bot.db.fetchrow(query, member.id)
+            row = await self.bot.db.fetchrow(query, member.id)
 
             embed = discord.Embed(colour=0xff8aa00)
             embed.set_author(name=f"{member.name}'s Stats", icon_url=f"{member.avatar_url}")
-            embed.add_field(name="<:upvote:507362047059689472" Upvotes", value=f"{row['upvotes']}", inline=True)
+            embed.add_field(name="<:upvote:507362047059689472> Upvotes", value=f"{row['upvotes']}", inline=True)
             embed.add_field(name="💵 Balance", value="0", inline=True)
             await ctx.send(embed=embed)
 
