@@ -78,6 +78,7 @@ class Fun_Commands:
                 else:
                     pass
         await pollmsg.edit(content=f"{ctx.message.author.mention} created a poll that will end after {time} seconds!\n**{question}**\n\nTime's up!\n👍 = {upvote_count-1}\n\n👎 = {downvote_count-1}")
+        await ctx.send(f"**{question}**\n\nTime's up!\n👍 = {upvote_count-1}\n\n👎 = {downvote_count-1}")
 
 
 def setup(bot):
