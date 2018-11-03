@@ -15,7 +15,7 @@ class Bot(AutoShardedBot):
         if not self.is_ready() or msg.author.bot or not permissions.can_send(msg) or msg.guild is None:
             return
         else:
-            if msg.attachments or msg.embeds and msg.channel.id == 445658065933434892:
+            if msg.attachments and msg.channel.id == 445658065933434892:
                 upvote = self.get_emoji(507362047059689472)
                 await msg.add_reaction(upvote)
                 await self.process_commands(msg)
