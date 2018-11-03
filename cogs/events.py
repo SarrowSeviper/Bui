@@ -76,7 +76,7 @@ class Events:
             await joinleave.send(f"{member} ({member.id}) ({member.mention}) left the society..")
 
     async def on_reaction_add(self, reaction, user):
-        if reaction.message.channel.id == 445658065933434892 and (reaction.message.attachments or reaction.message.embeds) and not user.bot and user.id != reaction.message.author.id and reaction.emoji.id == 507362047059689472:
+        if reaction.message.channel.id == 445658065933434892 or reaction.message.channel.id == 445659536016277514 and reaction.message.attachments or reaction.message.embeds and not user.bot and user.id != reaction.message.author.id and reaction.emoji.id == 507362047059689472:
             query = "SELECT * FROM artstats WHERE userid = $1;"
             row = await self.bot.db.fetchrow(query, reaction.message.author.id)
             if row is None:
@@ -92,7 +92,7 @@ class Events:
             pass
 
     async def on_reaction_remove(self, reaction, user):
-        if reaction.message.channel.id == 445658065933434892 and (reaction.message.attachments or rection.message.embeds) and not user.bot and user.id != reaction.message.author.id and reaction.emoji.id == 507362047059689472:
+        if reaction.message.channel.id == 445658065933434892 or reaction.message.channel.id == 445659536016277514 and reaction.message.attachments or reaction.message.embeds and not user.bot and user.id != reaction.message.author.id and reaction.emoji.id == 507362047059689472:
             query = "SELECT * FROM artstats WHERE userid = $1;"
             row = await self.bot.db.fetchrow(query, reaction.message.author.id)
             if row is None:
