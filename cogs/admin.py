@@ -154,14 +154,5 @@ class Admin:
             await ctx.send(f"I reset {member.mention}'s warns!")
             await logchannel.send(f"I reset {member.mention}'s warns!")
 
-    @commands.command()
-    @commands.guild_only()
-    @commands.check(repo.is_owner)
-    async def addmoney(self, ctx, member: discord.Member):
-        """ Add money to target user """
-        """ NOT AVAILABLE YET UNTIL DATABASE IS SET """
-
-
-
 def setup(bot):
     bot.add_cog(Admin(bot))
