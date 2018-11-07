@@ -165,6 +165,21 @@ class Admin:
     @commands.command()
     @commands.guild_only()
     @commands.check(repo.is_owner)
+    async def setupvote(self, ctx, member: discord.Member, votestoset):
+        query = "SELECT * FROM artstats WHERE userid=$1"
+        row = await self.bot.db.fetchrow(query, member.id)
+        if row is None:
+            query = "INSERT INTO artstats VALUES ($1, $2);"
+            await self.bot.db.execute(query, member.id, votestoset)
+            return await ctx.send(f"**{member.name}** has been set with **{votestoset}** upvotes.")
+        else:
+            query = "UPDATE artstats SET upvotes=$2 WHERE userid=$1"
+            await self.bot.db.execute(query, member.id, votestoset)
+            await ctx.send(f"**{member.name}** has been set with **{votestoset}** upvotes.")
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.check(repo.is_owner)
     async def registersketch(self, ctx, artist: str = None, *, sketch: str = None):
         """
         Adds a database entry for sketchdaily
