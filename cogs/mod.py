@@ -331,6 +331,29 @@ class Moderator:
         except:
             return
 
+    @commands.command()
+    @commands.guild_only()
+    @commands.check(repo.is_owner)
+    async def addupvote(self, ctx, member: discord.Member, input: int = None):
+        query = "SELECT * FROM artstats WHERE userid=$1"
+        row = await self.bot.db.fetchrow(query, member.id)
+        if row is None:
+            query = "INSERT INTO artstats VALUES ($1, 0);"
+            await self.bot.db.execute(query, member.id)
+            return await ctx.send("I had to write the user into the database! Please run this again!")
+        else:
+            query = "UPDATE artstats SET upvotes=$2 WHERE userid=$1"
+            await self.bot.db.execute(query, member.id, input)
+            query = "SELECT * FROM artstats WHERE userid=$1"
+            row = await self.bot.db.fetchrow(query, member.id)
+            await ctx.send(f"**{member.name}** has been added with " + input + f" upvotes. Their current upvotes are **{row['upvotes']}")
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.check(repo.is_owner)
+    async def addmoney(self, ctx, member: discord.Member):
+        """ Add money to target user """
+        """ NOT AVAILABLE YET UNTIL DATABASE IS SET """
 
 def setup(bot):
     bot.add_cog(Moderator(bot))
