@@ -1,6 +1,9 @@
 import time
 import aiohttp
+import asyncpg
+import asyncio
 import discord
+import random
 
 from utils import repo, default, http, dataIO
 from discord.ext import commands
@@ -11,6 +14,11 @@ class Admin:
         self.bot = bot
         self.config = default.get("config.json")
         self._last_result = None
+
+    @staticmethod
+    def generatecode():
+        code = random.randint(11111, 99999)
+        return f"{code}"
 
     @commands.command()
     @commands.check(repo.is_owner)
@@ -157,10 +165,25 @@ class Admin:
     @commands.command()
     @commands.guild_only()
     @commands.check(repo.is_owner)
-    async def addmoney(self, ctx, member: discord.Member):
-        """ Add money to target user """
-        """ NOT AVAILABLE YET UNTIL DATABASE IS SET """
+    async def registersketch(self, ctx, artist: str = None, *, sketch: str = None):
+        """
+        Adds a database entry for sketchdaily
+        """
+        if artist is None:
+            return await ctx.send("Please include a user!")
+        if sketch is None:
+            return await ctx.send("Please include an idea!")
+        code = self.generatecode()
+        query = "INSERT INTO sketchdaily VALUES ($1, $2, $3);"
+        await self.bot.db.execute(query, int(code), artist, sketch)
+        await ctx.send(f"I have successfully added the idea \"{sketch}\" by \"{artist}\" with the tag {code} to the database!")
 
+#    @commands.command()
+#    @commands.guild_only()
+#    @commands.check(repo.is_owner)
+#    async def addmoney(self, ctx, member: discord.Member):
+#        """ Add money to target user """
+#        """ NOT AVAILABLE YET UNTIL DATABASE IS SET """
 
 
 def setup(bot):
