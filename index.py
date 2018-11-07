@@ -26,6 +26,7 @@ async def run():
 
     await db.execute("CREATE TABLE IF NOT EXISTS warnings(userid bigint, warnings int);")
     await db.execute("CREATE TABLE IF NOT EXISTS artstats(userid bigint, upvotes int);")
+    await db.execute("CREATE TABLE IF NOT EXISTS sketchdaily(code int, artist varchar, idea varchar);")
 
     bot = Bot(command_prefix=config.prefix, prefix=config.prefix, pm_help=True, help_attrs=help_attrs, formatter=HelpFormat(), db=db)
     try:
