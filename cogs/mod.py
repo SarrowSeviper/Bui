@@ -331,12 +331,13 @@ class Moderator:
         except:
             return
 
-    @commands.command()
-    @commands.guild_only()
-    @commands.check(repo.is_owner)
-    async def addmoney(self, ctx, member: discord.Member):
-        """ Add money to target user """
-        """ NOT AVAILABLE YET UNTIL DATABASE IS SET """
+#    @commands.command()
+#    @commands.guild_only()
+#    @commands.check(repo.is_owner)
+#    async def addmoney(self, ctx, member: discord.Member):
+#        """ Add money to target user """
+#        """ NOT AVAILABLE YET UNTIL DATABASE IS SET """
+
 
 def setup(bot):
     bot.add_cog(Moderator(bot))
