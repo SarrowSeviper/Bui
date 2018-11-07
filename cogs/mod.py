@@ -334,7 +334,7 @@ class Moderator:
     @commands.command()
     @commands.guild_only()
     @commands.check(repo.is_owner)
-    async def addupvote(self, ctx, member: discord.Member, input: int = None):
+    async def setupvote(self, ctx, member: discord.Member, input):
         query = "SELECT * FROM artstats WHERE userid=$1"
         row = await self.bot.db.fetchrow(query, member.id)
         if row is None:
@@ -346,7 +346,7 @@ class Moderator:
             await self.bot.db.execute(query, member.id, input)
             query = "SELECT * FROM artstats WHERE userid=$1"
             row = await self.bot.db.fetchrow(query, member.id)
-            await ctx.send(f"**{member.name}** has been added with " + input + f" upvotes. Their current upvotes are **{row['upvotes']}")
+            await ctx.send(f"**{member.name}** has been set with **{row['upvotes']}** upvotes.")
 
     @commands.command()
     @commands.guild_only()
