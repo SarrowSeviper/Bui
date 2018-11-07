@@ -1,6 +1,9 @@
 import time
 import aiohttp
+import asyncpg
+import asyncio
 import discord
+import random
 
 from utils import repo, default, http, dataIO
 from discord.ext import commands
@@ -11,6 +14,11 @@ class Admin:
         self.bot = bot
         self.config = default.get("config.json")
         self._last_result = None
+
+    @staticmethod
+    def generatecode():
+        code = random.randint(11111, 99999)
+        return f"{code}"
 
     @commands.command()
     @commands.check(repo.is_owner)
