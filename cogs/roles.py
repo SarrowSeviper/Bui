@@ -139,6 +139,27 @@ class Role_Distribution:
         await asyncio.sleep(5)
         await msg.delete()
 
+    @iam.command(name="sketchdaily")
+    async def iam_event(self, ctx):
+        """
+        - Gives the Sketchdaily role
+        """
+
+        message = []
+        for role in ctx.guild.roles:
+            if role.name == "Sketchdaily":
+                message.append(role.id)
+        try:
+            therole = discord.Object(id=message[0])
+        except:
+            return
+
+        await ctx.author.add_roles(therole)
+        await ctx.message.delete()
+        msg = await ctx.send(f"**{ctx.author.name}**, I have given you the **Sketchdaily** role!")
+        await asyncio.sleep(5)
+        await msg.delete()
+
     @commands.group()
     async def iamnot(self, ctx):
         """
@@ -253,6 +274,27 @@ class Role_Distribution:
         await ctx.author.remove_roles(therole)
         await ctx.message.delete()
         msg = await ctx.send(f"**{ctx.author.name}**, I have removed you from the **Event** role!")
+        await asyncio.sleep(5)
+        await msg.delete()
+
+    @iamnot.command(name="sketchdaily")
+    async def iamnot_sketchdaily(self, ctx):
+        """
+        - Removes the Sketchdaily role
+        """
+
+        message = []
+        for role in ctx.guild.roles:
+            if role.name == "Sketchdaily":
+                message.append(role.id)
+        try:
+            therole = discord.Object(id=message[0])
+        except:
+            return
+
+        await ctx.author.remove_roles(therole)
+        await ctx.message.delete()
+        msg = await ctx.send(f"**{ctx.author.name}**, I have removed you from the **Sketchdaily** role!")
         await asyncio.sleep(5)
         await msg.delete()
 
