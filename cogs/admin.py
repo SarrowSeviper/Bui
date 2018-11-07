@@ -162,29 +162,5 @@ class Admin:
             await ctx.send(f"I reset {member.mention}'s warns!")
             await logchannel.send(f"I reset {member.mention}'s warns!")
 
-    @commands.command()
-    @commands.guild_only()
-    @commands.check(repo.is_owner)
-    async def registersketch(self, ctx, artist: str = None, *, sketch: str = None):
-        """
-        Adds a database entry for sketchdaily
-        """
-        if artist is None:
-            return await ctx.send("Please include a user!")
-        if sketch is None:
-            return await ctx.send("Please include an idea!")
-        code = self.generatecode()
-        query = "INSERT INTO sketchdaily VALUES ($1, $2, $3);"
-        await self.bot.db.execute(query, int(code), artist, sketch)
-        await ctx.send(f"I have successfully added the idea \"{sketch}\" by \"{artist}\" with the tag {code} to the database!")
-
-#    @commands.command()
-#    @commands.guild_only()
-#    @commands.check(repo.is_owner)
-#    async def addmoney(self, ctx, member: discord.Member):
-#        """ Add money to target user """
-#        """ NOT AVAILABLE YET UNTIL DATABASE IS SET """
-
-
 def setup(bot):
     bot.add_cog(Admin(bot))
