@@ -182,7 +182,10 @@ class Admin:
     @commands.command()
     @commands.guild_only()
     @commands.check(repo.is_owner)
-    async def manualsketchdaily(self, ctx):
+    async def manualsketchdaily(self):
+        """
+        Manually send off a daily sketch
+        """
         dayandmonth = datetime.date.today()
         row = await self.bot.db.fetchrow("SELECT * FROM sketchdaily ORDER BY RANDOM() LIMIT 1;")
         if row is None:
