@@ -4,7 +4,9 @@ import asyncpg
 import asyncio
 import discord
 import random
+import datetime
 
+from discord_webhook import DiscordWebhook
 from utils import repo, default, http, dataIO
 from discord.ext import commands
 
@@ -165,7 +167,7 @@ class Admin:
     @commands.command()
     @commands.guild_only()
     @commands.check(repo.is_owner)
-    async def setupvote(self, ctx, member: discord.Member, votestoset):
+    async def setupvotes(self, ctx, member: discord.Member, votestoset):
         query = "SELECT * FROM artstats WHERE userid=$1"
         row = await self.bot.db.fetchrow(query, member.id)
         if row is None:
@@ -176,6 +178,21 @@ class Admin:
             query = "UPDATE artstats SET upvotes=$2 WHERE userid=$1"
             await self.bot.db.execute(query, member.id, votestoset)
             await ctx.send(f"**{member.name}** has been set with **{votestoset}** upvotes.")
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.check(repo.is_owner)
+    async def manualsketchdaily(self, ctx):
+        dayandmonth = datetime.date.today()
+        row = await self.bot.db.fetchrow("SELECT * FROM sketchdaily ORDER BY RANDOM() LIMIT 1;")
+        if row is None:
+            return print("There are no suggestions...")
+        print('True, sending webhook message')
+        webhook = DiscordWebhook(url=f'{self.bot.config.webhookurl}', content=f"<@&509164409604669450>\n\nThe prompt for {dayandmonth.day}/{dayandmonth.month}/{dayandmonth.year} is:\n\n**{row['idea']}**\n\nIt was suggested by **{row['artist']}**\n\nPlease post your submission below this line!\n\n===================")
+        webhook.execute()
+        sketchcode = row['code']
+        query = "DELETE FROM sketchdaily WHERE code=$1;"
+        await self.bot.db.execute(query, sketchcode)
 
     @commands.command()
     @commands.guild_only()
