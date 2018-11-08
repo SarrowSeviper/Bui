@@ -168,6 +168,7 @@ class Admin:
     @commands.guild_only()
     @commands.check(repo.is_owner)
     async def setupvotes(self, ctx, member: discord.Member, votestoset):
+        """Does what it says on the tin"""
         query = "SELECT * FROM artstats WHERE userid=$1"
         row = await self.bot.db.fetchrow(query, member.id)
         if row is None:
@@ -182,7 +183,7 @@ class Admin:
     @commands.command()
     @commands.guild_only()
     @commands.check(repo.is_owner)
-    async def manualsketchdaily(self):
+    async def manualsketchdaily(self, ctx):
         """
         Manually send off a daily sketch
         """
