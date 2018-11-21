@@ -1,4 +1,9 @@
+asyncpg
+requests
+dhooks
+aiohttp
+discord
 git+https://github.com/Rapptz/discord.py@rewrite
 psutil
 asyncio
-yarl<1.2
+yarl<1.3

@@ -1,12 +1,16 @@
 import time
 import aiohttp
-import asyncpg
-import asyncio
+import traceback
 import discord
-import random
+import textwrap
+import io
 import datetime
+import random
+import json
 
-from discord_webhook import DiscordWebhook
+from contextlib import redirect_stdout
+from copy import copy
+from typing import Union
 from utils import repo, default, http, dataIO
 from discord.ext import commands
 
@@ -16,6 +20,16 @@ class Admin:
         self.bot = bot
         self.config = default.get("config.json")
         self._last_result = None
+
+    @staticmethod
+    def cleanup_code(content):
+        """Automatically removes code blocks from the code."""
+        # remove ```py\n```
+        if content.startswith('```') and content.endswith('```'):
+            return '\n'.join(content.split('\n')[1:-1])
+
+        # remove `foo`
+        return content.strip('` \n')
 
     @staticmethod
     def generatecode():
@@ -213,6 +227,95 @@ class Admin:
         query = "INSERT INTO sketchdaily VALUES ($1, $2, $3);"
         await self.bot.db.execute(query, int(code), artist, sketch)
         await ctx.send(f"I have successfully added the idea \"{sketch}\" by \"{artist}\" with the tag {code} to the database!")
+
+    @commands.command(pass_context=True, name='eval')
+    @commands.check(repo.is_owner)
+    async def _eval(self, ctx, *, body: str):
+        """Evaluates a code"""
+        env = {
+            'bot': self.bot,
+            'ctx': ctx,
+            'channel': ctx.channel,
+            'author': ctx.author,
+            'guild': ctx.guild,
+            'message': ctx.message,
+            '_': self._last_result
+        }
+
+        if "bot.http.token" in body:
+            return await ctx.send(f"You can't take my token {ctx.author.name}")
+        env.update(globals())
+
+        body = self.cleanup_code(body)
+        stdout = io.StringIO()
+
+        to_compile = f'async def func():\n{textwrap.indent(body, "  ")}'
+
+        try:
+            exec(to_compile, env)
+        except Exception as e:
+            return await ctx.send(f'```py\n{e.__class__.__name__}: {e}\n```')
+
+        func = env['func']
+        try:
+            with redirect_stdout(stdout):
+                ret = await func()
+        except Exception as e:
+            value = stdout.getvalue()
+            await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
+        else:
+            value = stdout.getvalue()
+            reactiontosend = self.bot.get_emoji(508388437661843483)
+            await ctx.message.add_reaction(reactiontosend)
+
+            if ret is None:
+                if value:
+                    await ctx.send(f'```py\n{value}\n```')
+            else:
+                if self.config.token in ret:
+                    ret = self.config.realtoken
+                self._last_result = ret
+                await ctx.send(f'Inputted code:\n```py\n{body}\n```\n\nOutputted Code:\n```py\n{value}{ret}\n```')
+
+    @commands.group(aliases=["as"])
+    @commands.check(repo.is_owner)
+    async def sudo(self, ctx):
+        """Run a cmd under an altered context
+        """
+        if ctx.invoked_subcommand is None:
+            await ctx.send("...")
+
+    @sudo.command(aliases=["u", "--u", "--user", "user"])
+    @commands.check(repo.is_owner)
+    async def sudo_user(self, ctx, who: Union[discord.Member, discord.User], *, command: str):
+        """Run a cmd under someone else's name
+        """
+        msg = copy(ctx.message)
+        msg.author = who
+        msg.content = ctx.prefix + command
+        new_ctx = await self.bot.get_context(msg)
+        await self.bot.invoke(new_ctx)
+
+    @sudo.command(aliases=["c", "--c", "--channel", "channel"])
+    @commands.check(repo.is_owner)
+    async def sudo_channel(self, ctx, chid: int, *, command: str):
+        """Run a command as another user."""
+        cmd = copy(ctx.message)
+        cmd.channel = self.bot.get_channel(chid)
+        cmd.content = ctx.prefix + command
+        new_ctx = await self.bot.get_context(cmd)
+        await self.bot.invoke(new_ctx)
+
+    @commands.command()
+    @commands.check(repo.is_owner)
+    async def blacklist(self, ctx, uid: int):
+        with open("blacklist.json", "r+") as file:
+            content = json.load(file)
+            content["blacklist"].append(uid)
+            file.seek(0)
+            json.dump(content, file)
+            file.truncate()
+        await ctx.send(f"I have successfully blacklisted the id **{uid}**")
 
 
 def setup(bot):
