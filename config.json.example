@@ -6,5 +6,6 @@
   "database": "DATABASE",
   "dbname": "DATABASE USERNAME",
   "dbpass": "DATABASE PASSWORD",
-  "webhookurl": "WEBHOOK URL HERE"
+  "webhookurl": "WEBHOOK URL HERE",
+  "santahook": ""
 }

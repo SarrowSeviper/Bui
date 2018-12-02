@@ -8,6 +8,7 @@ import datetime
 import random
 import json
 
+from dhooks import Webhook
 from contextlib import redirect_stdout
 from copy import copy
 from typing import Union
@@ -206,7 +207,7 @@ class Admin:
         if row is None:
             return print("There are no suggestions...")
         print('True, sending webhook message')
-        webhook = DiscordWebhook(url=f'{self.config.webhookurl}', content=f"<@&509164409604669450>\n\nThe prompt for {dayandmonth.day}/{dayandmonth.month}/{dayandmonth.year} is:\n\n**{row['idea']}**\n\nIt was suggested by **{row['artist']}**\n\nPlease post your submission below this line!\n\n===================")
+        webhook = Webhook(url=f'{self.config.webhookurl}', content=f"<@&509164409604669450>\n\nThe prompt for {dayandmonth.day}/{dayandmonth.month}/{dayandmonth.year} is:\n\n**{row['idea']}**\n\nIt was suggested by **{row['artist']}**\n\nPlease post your submission below this line!\n\n===================")
         webhook.execute()
         sketchcode = row['code']
         query = "DELETE FROM sketchdaily WHERE code=$1;"

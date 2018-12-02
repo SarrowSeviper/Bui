@@ -2,7 +2,9 @@ import time
 import discord
 import psutil
 import os
+import asyncio
 
+from dhooks import Webhook, Embed
 from discord.ext import commands
 from datetime import datetime
 from utils import repo, default
@@ -157,6 +159,30 @@ class Information:
             embed.add_field(name="<:upvote:507362047059689472> Upvotes", value=f"{row['upvotes']}", inline=True)
             embed.add_field(name="💵 Balance", value="0", inline=True)
             await ctx.send(embed=embed)
+
+    @commands.command()
+    async def secretsanta(self, ctx):
+        """ Registers for the Secret Santa! """
+        def check(reaction, user):
+            return user == ctx.author and str(reaction.emoji) == '🎟'
+
+        await ctx.message.delete()
+        msg = await ctx.author.send(f"**{ctx.author.name}**, by entering, you are committed to drawing whatever you've been presented with. React to confirm your entry into the event.")
+        await msg.add_reaction('🎟')
+        try:
+            await self.bot.wait_for('reaction_add', timeout=60.0, check=check)
+        except asyncio.TimeoutError:
+            await ctx.author.send('Timed out..')
+            await msg.delete()
+        else:
+            dmmsg = await ctx.author.send('You have been entered into the Secret Santa')
+            await msg.delete()
+            hook = Webhook(self.config.santahook, is_async=True)
+            embed = Embed(title='Someone entered the event!', description=f'User: {ctx.author.mention}\nTag: {ctx.author.name}#{ctx.author.discriminator}\nID: {ctx.author.id}', color=0xDB1F1F, timestamp=True)
+            await hook.send(embeds=embed)
+            await hook.close()
+            await asyncio.sleep(5)
+            await dmmsg.delete()
 
 
 def setup(bot):
