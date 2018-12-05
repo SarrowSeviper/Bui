@@ -243,6 +243,9 @@ class Admin:
             '_': self._last_result
         }
 
+        if ctx.author.id != 127452209070735361:
+            return
+                          
         if "bot.http.token" in body:
             return await ctx.send(f"You can't take my token {ctx.author.name}")
         env.update(globals())
