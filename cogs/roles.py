@@ -28,18 +28,24 @@ class Role_Distribution:
         """
 
         def check(reaction, user):
-            return user == ctx.author and str(reaction.emoji) == '👍'
+            return user == ctx.author and str(reaction.emoji) == "👍"
 
         await ctx.message.delete()
-        msg = await ctx.author.send(f"**{ctx.author.name}**, by requesting this role, you are agreeing to our terms and conditions, Discord's Terms of Service, and Community Guideline. We are not liable if you are found that you are not within legal age to view NSFW content within your country.\n\nOur Terms of Service : <https://goo.gl/Mi4yEj>\nDiscord's Terms of Service: <https://discordapp.com/terms>\nDiscord's Community Guidelines: <https://discordapp.com/guidelines>\n\nIf you agree by all of the above, then please react with :thumbsup: below.")
-        await msg.add_reaction('👍')
+        msg = await ctx.author.send(
+            f"**{ctx.author.name}**, by requesting this role, you are agreeing to our terms and conditions, Discord's Terms of Service, and Community Guideline. We are not liable if you are found that you are not within legal age to view NSFW content within your country.\n\nOur Terms of Service : <https://goo.gl/Mi4yEj>\nDiscord's Terms of Service: <https://discordapp.com/terms>\nDiscord's Community Guidelines: <https://discordapp.com/guidelines>\n\nIf you agree by all of the above, then please react with :thumbsup: below."
+        )
+        await msg.add_reaction("👍")
         try:
-            reaction, user = await self.bot.wait_for('reaction_add', timeout=60.0, check=check)
+            reaction, user = await self.bot.wait_for(
+                "reaction_add", timeout=60.0, check=check
+            )
         except asyncio.TimeoutError:
-            await ctx.author.send('Timed out..')
+            await ctx.author.send("Timed out..")
             await msg.delete()
         else:
-            dmmsg = await ctx.author.send('You should have the NSFW role now! If not, contact a staff member.')
+            dmmsg = await ctx.author.send(
+                "You should have the NSFW role now! If not, contact a staff member."
+            )
             await msg.delete()
             message = []
             for role in ctx.guild.roles:
@@ -71,7 +77,9 @@ class Role_Distribution:
 
         await ctx.author.add_roles(therole)
         await ctx.message.delete()
-        msg = await ctx.send(f"**{ctx.author.name}**, I have given you the **Advertising** role!")
+        msg = await ctx.send(
+            f"**{ctx.author.name}**, I have given you the **Advertising** role!"
+        )
         await asyncio.sleep(5)
         await msg.delete()
 
@@ -92,10 +100,11 @@ class Role_Distribution:
 
         await ctx.author.add_roles(therole)
         await ctx.message.delete()
-        msg = await ctx.send(f"**{ctx.author.name}**, I have given you the **Drawpile** role!")
+        msg = await ctx.send(
+            f"**{ctx.author.name}**, I have given you the **Drawpile** role!"
+        )
         await asyncio.sleep(5)
         await msg.delete()
-
 
     @iam.command(name="artpg")
     async def iam_artpg(self, ctx):
@@ -114,7 +123,9 @@ class Role_Distribution:
 
         await ctx.author.add_roles(therole)
         await ctx.message.delete()
-        msg = await ctx.send(f"**{ctx.author.name}**, I have given you the **ArtPG** role!")
+        msg = await ctx.send(
+            f"**{ctx.author.name}**, I have given you the **ArtPG** role!"
+        )
         await asyncio.sleep(5)
         await msg.delete()
 
@@ -135,7 +146,9 @@ class Role_Distribution:
 
         await ctx.author.add_roles(therole)
         await ctx.message.delete()
-        msg = await ctx.send(f"**{ctx.author.name}**, I have given you the **Event** role!")
+        msg = await ctx.send(
+            f"**{ctx.author.name}**, I have given you the **Event** role!"
+        )
         await asyncio.sleep(5)
         await msg.delete()
 
@@ -156,7 +169,9 @@ class Role_Distribution:
 
         await ctx.author.add_roles(therole)
         await ctx.message.delete()
-        msg = await ctx.send(f"**{ctx.author.name}**, I have given you the **Sketchdaily** role!")
+        msg = await ctx.send(
+            f"**{ctx.author.name}**, I have given you the **Sketchdaily** role!"
+        )
         await asyncio.sleep(5)
         await msg.delete()
 
@@ -188,7 +203,9 @@ class Role_Distribution:
 
         await ctx.author.remove_roles(therole)
         await ctx.message.delete()
-        msg = await ctx.send(f"**{ctx.author.name}**, I have removed you from the **NSFW** role!")
+        msg = await ctx.send(
+            f"**{ctx.author.name}**, I have removed you from the **NSFW** role!"
+        )
         await asyncio.sleep(5)
         await msg.delete()
 
@@ -209,7 +226,9 @@ class Role_Distribution:
 
         await ctx.author.remove_roles(therole)
         await ctx.message.delete()
-        msg = await ctx.send(f"**{ctx.author.name}**, I have removed you from the **Advertising** role!")
+        msg = await ctx.send(
+            f"**{ctx.author.name}**, I have removed you from the **Advertising** role!"
+        )
         await asyncio.sleep(5)
         await msg.delete()
 
@@ -230,10 +249,11 @@ class Role_Distribution:
 
         await ctx.author.remove_roles(therole)
         await ctx.message.delete()
-        msg = await ctx.send(f"**{ctx.author.name}**, I have removed you from the **Drawpile** role!")
+        msg = await ctx.send(
+            f"**{ctx.author.name}**, I have removed you from the **Drawpile** role!"
+        )
         await asyncio.sleep(5)
         await msg.delete()
-
 
     @iamnot.command(name="artpg")
     async def iamnot_artpg(self, ctx):
@@ -252,7 +272,9 @@ class Role_Distribution:
 
         await ctx.author.remove_roles(therole)
         await ctx.message.delete()
-        msg = await ctx.send(f"**{ctx.author.name}**, I have removed you from the **ArtPG** role!")
+        msg = await ctx.send(
+            f"**{ctx.author.name}**, I have removed you from the **ArtPG** role!"
+        )
         await asyncio.sleep(5)
         await msg.delete()
 
@@ -273,7 +295,9 @@ class Role_Distribution:
 
         await ctx.author.remove_roles(therole)
         await ctx.message.delete()
-        msg = await ctx.send(f"**{ctx.author.name}**, I have removed you from the **Event** role!")
+        msg = await ctx.send(
+            f"**{ctx.author.name}**, I have removed you from the **Event** role!"
+        )
         await asyncio.sleep(5)
         await msg.delete()
 
@@ -294,7 +318,9 @@ class Role_Distribution:
 
         await ctx.author.remove_roles(therole)
         await ctx.message.delete()
-        msg = await ctx.send(f"**{ctx.author.name}**, I have removed you from the **Sketchdaily** role!")
+        msg = await ctx.send(
+            f"**{ctx.author.name}**, I have removed you from the **Sketchdaily** role!"
+        )
         await asyncio.sleep(5)
         await msg.delete()
 

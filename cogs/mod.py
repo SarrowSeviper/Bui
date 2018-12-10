@@ -16,14 +16,20 @@ class MemberID(commands.Converter):
             try:
                 return int(argument, base=10)
             except ValueError:
-                raise commands.BadArgument(f"{argument} is not a valid member or member ID.") from None
+                raise commands.BadArgument(
+                    f"{argument} is not a valid member or member ID."
+                ) from None
         else:
-            can_execute = ctx.author.id == ctx.bot.owner_id or \
-                          ctx.author == ctx.guild.owner or \
-                          ctx.author.top_role > m.top_role
+            can_execute = (
+                ctx.author.id == ctx.bot.owner_id
+                or ctx.author == ctx.guild.owner
+                or ctx.author.top_role > m.top_role
+            )
 
             if not can_execute:
-                raise commands.BadArgument('You cannot do this action on this user due to role hierarchy.')
+                raise commands.BadArgument(
+                    "You cannot do this action on this user due to role hierarchy."
+                )
             return m.id
 
 
@@ -33,7 +39,9 @@ class ActionReason(commands.Converter):
 
         if len(ret) > 512:
             reason_max = 512 - len(ret) - len(argument)
-            raise commands.BadArgument(f'reason is too long ({len(argument)}/{reason_max})')
+            raise commands.BadArgument(
+                f"reason is too long ({len(argument)}/{reason_max})"
+            )
         return ret
 
 
@@ -63,18 +71,24 @@ class Moderator:
         query = "SELECT warnings FROM warnings WHERE userid = $1;"
         row = await self.bot.db.fetchrow(query, member.id)
         if row is None:
-            await ctx.send("They are not registered in the database! I'll add them now!")
+            await ctx.send(
+                "They are not registered in the database! I'll add them now!"
+            )
             query = "INSERT INTO warnings VALUES ($1, 0);"
             await self.bot.db.execute(query, member.id)
         else:
             query = "SELECT warnings FROM warnings WHERE userid = $1;"
             row = await self.bot.db.fetchrow(query, member.id)
-            amountgiven = int(row['warnings'] + amount)
+            amountgiven = int(row["warnings"] + amount)
             query = "UPDATE warnings SET warnings = $1 WHERE userid = $2;"
             await self.bot.db.execute(query, amountgiven, member.id)
             logchannel = self.bot.get_channel(499327315088769025)
-            await ctx.send(f"I added **{amount}** to {member.mention}'s warns! They now have **{amountgiven}**.")
-            await logchannel.send(f"I added **{amount}** to {member.mention}'s warns! They now have **{amountgiven}**.")
+            await ctx.send(
+                f"I added **{amount}** to {member.mention}'s warns! They now have **{amountgiven}**."
+            )
+            await logchannel.send(
+                f"I added **{amount}** to {member.mention}'s warns! They now have **{amountgiven}**."
+            )
 
     @commands.command()
     @commands.guild_only()
@@ -95,7 +109,9 @@ class Moderator:
     async def nickname(self, ctx, member: discord.Member, *, name: str = None):
         """ Nicknames a user from the current server. """
         try:
-            await member.edit(nick=name, reason=default.responsible(ctx.author, "Changed by command"))
+            await member.edit(
+                nick=name, reason=default.responsible(ctx.author, "Changed by command")
+            )
             message = f"Changed **{member.name}'s** nickname to **{name}**"
             if name is None:
                 message = f"Reset **{member.name}'s** nickname"
@@ -109,7 +125,10 @@ class Moderator:
     async def ban(self, ctx, member: discord.member, *, reason: str = None):
         """ Bans a user from the current server. """
         try:
-            await ctx.guild.ban(discord.Object(id=member), reason=default.responsible(ctx.author, reason))
+            await ctx.guild.ban(
+                discord.Object(id=member),
+                reason=default.responsible(ctx.author, reason),
+            )
             loggingchan = self.bot.get_channel(499327315088769025)
             await ctx.send(default.actionmessage("banned", member))
             await loggingchan.send(default.actionmessage("banned", member))
@@ -128,10 +147,14 @@ class Moderator:
         try:
             therole = discord.Object(id=message[0])
         except IndexError:
-            return await ctx.send("Are you sure you've made a role called **Muted**? Remember that it's case sensetive too...")
+            return await ctx.send(
+                "Are you sure you've made a role called **Muted**? Remember that it's case sensetive too..."
+            )
 
         try:
-            await member.add_roles(therole, reason=default.responsible(ctx.author, reason))
+            await member.add_roles(
+                therole, reason=default.responsible(ctx.author, reason)
+            )
             loggingchan = self.bot.get_channel(499327315088769025)
             await ctx.send(default.actionmessage("muted", member))
             await loggingchan.send(default.actionmessage("muted", member))
@@ -150,10 +173,14 @@ class Moderator:
         try:
             therole = discord.Object(id=message[0])
         except IndexError:
-            return await ctx.send("Are you sure you've made a role called **Muted**? Remember that it's case sensetive too...")
+            return await ctx.send(
+                "Are you sure you've made a role called **Muted**? Remember that it's case sensetive too..."
+            )
 
         try:
-            await member.remove_roles(therole, reason=default.responsible(ctx.author, reason))
+            await member.remove_roles(
+                therole, reason=default.responsible(ctx.author, reason)
+            )
             loggingchan = self.bot.get_channel(499327315088769025)
             await ctx.send(default.actionmessage("unmuted", member))
             await loggingchan.send(default.actionmessage("unmuted", member))
@@ -173,29 +200,44 @@ class Moderator:
 
     @find.command(name="playing")
     async def find_playing(self, ctx, *, search: str):
-        result = [f"{i} | {i.activity.name}\r\n" for i in ctx.guild.members if (i.activity is not None) and (search.lower() in i.activity.name.lower()) and (not i.bot)]
+        result = [
+            f"{i} | {i.activity.name}\r\n"
+            for i in ctx.guild.members
+            if (i.activity is not None)
+            and (search.lower() in i.activity.name.lower())
+            and (not i.bot)
+        ]
         if len(result) == 0:
             return await ctx.send("Your search result was empty...")
-        data = BytesIO(''.join(result).encode('utf-8'))
-        await ctx.send(content=f"Found **{len(result)}** on your search for **{search}**", file=discord.File(data, filename=default.timetext(f'PlayingSearch')))
+        data = BytesIO("".join(result).encode("utf-8"))
+        await ctx.send(
+            content=f"Found **{len(result)}** on your search for **{search}**",
+            file=discord.File(data, filename=default.timetext(f"PlayingSearch")),
+        )
 
     @find.command(name="username", aliases=["name"])
     async def find_name(self, ctx, *, search: str):
-        result = [f"{i}\r\n" for i in ctx.guild.members if (search.lower() in i.name.lower())]
+        result = [
+            f"{i}\r\n" for i in ctx.guild.members if (search.lower() in i.name.lower())
+        ]
         if len(result) == 0:
             return await ctx.send("Your search result was empty...")
-        data = BytesIO(''.join(result).encode('utf-8'))
-        await ctx.send(content=f"Found **{len(result)}** on your search for **{search}**",
-                       file=discord.File(data, filename=default.timetext(f'NameSearch')))
+        data = BytesIO("".join(result).encode("utf-8"))
+        await ctx.send(
+            content=f"Found **{len(result)}** on your search for **{search}**",
+            file=discord.File(data, filename=default.timetext(f"NameSearch")),
+        )
 
     @find.command(name="discriminator", aliases=["discrim"])
     async def find_discriminator(self, ctx, *, search: str):
         result = [f"{i}\r\n" for i in ctx.guild.members if (search in i.discriminator)]
         if len(result) == 0:
             return await ctx.send("Your search result was empty...")
-        data = BytesIO(''.join(result).encode('utf-8'))
-        await ctx.send(content=f"Found **{len(result)}** on your search for **{search}**",
-                       file=discord.File(data, filename=default.timetext(f'DiscriminatorSearch')))
+        data = BytesIO("".join(result).encode("utf-8"))
+        await ctx.send(
+            content=f"Found **{len(result)}** on your search for **{search}**",
+            file=discord.File(data, filename=default.timetext(f"DiscriminatorSearch")),
+        )
 
     @commands.group()
     @commands.guild_only()
@@ -204,12 +246,14 @@ class Moderator:
         """ Removes messages from the current server. """
 
         if ctx.invoked_subcommand is None:
-            help_cmd = self.bot.get_command('help')
-            await ctx.invoke(help_cmd, 'prune')
+            help_cmd = self.bot.get_command("help")
+            await ctx.invoke(help_cmd, "prune")
 
-    async def do_removal(self, ctx, limit, predicate, *, before=None, after=None, message=True):
+    async def do_removal(
+        self, ctx, limit, predicate, *, before=None, after=None, message=True
+    ):
         if limit > 2000:
-            return await ctx.send(f'Too many messages to search given ({limit}/2000)')
+            return await ctx.send(f"Too many messages to search given ({limit}/2000)")
 
         if before is None:
             before = ctx.message
@@ -220,15 +264,19 @@ class Moderator:
             after = discord.Object(id=after)
 
         try:
-            deleted = await ctx.channel.purge(limit=limit, before=before, after=after, check=predicate)
+            deleted = await ctx.channel.purge(
+                limit=limit, before=before, after=after, check=predicate
+            )
         except discord.Forbidden as e:
-            return await ctx.send('I do not have permissions to delete messages.')
+            return await ctx.send("I do not have permissions to delete messages.")
         except discord.HTTPException as e:
-            return await ctx.send(f'Error: {e} (try a smaller search?)')
+            return await ctx.send(f"Error: {e} (try a smaller search?)")
 
         deleted = len(deleted)
         if message is True:
-            await ctx.send(f'🚮 Successfully removed {deleted} message{"" if deleted == 1 else "s"}.')
+            await ctx.send(
+                f'🚮 Successfully removed {deleted} message{"" if deleted == 1 else "s"}.'
+            )
 
     @prune.command()
     async def embeds(self, ctx, search=100):
@@ -243,7 +291,9 @@ class Moderator:
     @prune.command()
     async def images(self, ctx, search=100):
         """Removes messages that have embeds or attachments."""
-        await self.do_removal(ctx, search, lambda e: len(e.embeds) or len(e.attachments))
+        await self.do_removal(
+            ctx, search, lambda e: len(e.embeds) or len(e.attachments)
+        )
 
     @prune.command()
     async def user(self, ctx, member: discord.Member, search=100):
@@ -256,11 +306,11 @@ class Moderator:
         The substring must be at least 3 characters long.
         """
         if len(substr) < 3:
-            await ctx.send('The substring length must be at least 3 characters.')
+            await ctx.send("The substring length must be at least 3 characters.")
         else:
             await self.do_removal(ctx, 100, lambda e: substr in e.content)
 
-    @prune.command(name='bots')
+    @prune.command(name="bots")
     async def _bots(self, ctx, prefix=None, search=100):
         """Removes a bot user's messages and messages with their optional prefix."""
 
@@ -269,7 +319,7 @@ class Moderator:
 
         await self.do_removal(ctx, search, predicate)
 
-    @prune.command(name='users')
+    @prune.command(name="users")
     async def _users(self, ctx, prefix=None, search=100):
         """Removes only user messages. """
 
@@ -278,22 +328,22 @@ class Moderator:
 
         await self.do_removal(ctx, search, predicate)
 
-    @prune.command(name='emoji')
+    @prune.command(name="emoji")
     async def _emoji(self, ctx, search=100):
         """Removes all messages containing custom emoji."""
-        custom_emoji = re.compile(r'<:(\w+):(\d+)>')
+        custom_emoji = re.compile(r"<:(\w+):(\d+)>")
 
         def predicate(m):
             return custom_emoji.search(m.content)
 
         await self.do_removal(ctx, search, predicate)
 
-    @prune.command(name='reactions')
+    @prune.command(name="reactions")
     async def _reactions(self, ctx, search=100):
         """Removes all reactions from messages that have them."""
 
         if search > 2000:
-            return await ctx.send(f'Too many messages to search for ({search}/2000)')
+            return await ctx.send(f"Too many messages to search for ({search}/2000)")
 
         total_reactions = 0
         async for message in ctx.history(limit=search, before=ctx.message):
@@ -301,7 +351,7 @@ class Moderator:
                 total_reactions += sum(r.count for r in message.reactions)
                 await message.clear_reactions()
 
-        await ctx.send(f'Successfully removed {total_reactions} reactions.')
+        await ctx.send(f"Successfully removed {total_reactions} reactions.")
 
     @commands.command()
     @commands.guild_only()
@@ -326,10 +376,15 @@ class Moderator:
             role = discord.utils.get(ctx.guild.roles, name=rolename)
             loggingchan = self.bot.get_channel(499327315088769025)
             await member.remove_roles(role)
-            await ctx.send(f"I have removed **{member.name}** from the **{role.name}** role!")
-            await loggingchan.send(f"Removed **{member.name}** from the **{role.name}** role")
+            await ctx.send(
+                f"I have removed **{member.name}** from the **{role.name}** role!"
+            )
+            await loggingchan.send(
+                f"Removed **{member.name}** from the **{role.name}** role"
+            )
         except:
             return
+
 
 #    @commands.command()
 #    @commands.guild_only()

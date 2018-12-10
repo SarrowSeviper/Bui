@@ -21,14 +21,30 @@ class HelpFormat(HelpFormatter):
 
 async def run():
     help_attrs = dict(hidden=True)
-    credentials = {"user": config.dbname, "password": config.dbpass, "database": config.database, "host": "127.0.0.1"}
+    credentials = {
+        "user": config.dbname,
+        "password": config.dbpass,
+        "database": config.database,
+        "host": "127.0.0.1",
+    }
     db = await asyncpg.create_pool(**credentials)
 
-    await db.execute("CREATE TABLE IF NOT EXISTS warnings(userid bigint, warnings int);")
+    await db.execute(
+        "CREATE TABLE IF NOT EXISTS warnings(userid bigint, warnings int);"
+    )
     await db.execute("CREATE TABLE IF NOT EXISTS artstats(userid bigint, upvotes int);")
-    await db.execute("CREATE TABLE IF NOT EXISTS sketchdaily(code int, artist varchar, idea varchar);")
+    await db.execute(
+        "CREATE TABLE IF NOT EXISTS sketchdaily(code int, artist varchar, idea varchar);"
+    )
 
-    bot = Bot(command_prefix=config.prefix, prefix=config.prefix, pm_help=True, help_attrs=help_attrs, formatter=HelpFormat(), db=db)
+    bot = Bot(
+        command_prefix=config.prefix,
+        prefix=config.prefix,
+        pm_help=True,
+        help_attrs=help_attrs,
+        formatter=HelpFormat(),
+        db=db,
+    )
     try:
         print("Logging in...")
         for file in os.listdir("cogs"):
