@@ -198,6 +198,20 @@ class Information:
             embed.add_field(name="💵 Balance", value="0", inline=True)
             await ctx.send(embed=embed)
 
+    @commands.command()
+    async def leaderboard(self, ctx):
+        query = "SELECT * FROM artstats ORDER BY upvotes DESC LIMIT 3;"
+        row = await self.bot.db.fetch(query)
+        embed = discord.Embed(
+            title="Leaderboard",
+            colour=0xFF8A00
+        )
+        for user in row:
+            embed.add_field(
+                name=f"{user['name']} with {user['upvotes']}",
+            )
+        await ctx.send(embed=embed)
+
     # @commands.command()
     # async def secretsanta(self, ctx):
     #     """ Registers for the Secret Santa! """
