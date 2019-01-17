@@ -208,7 +208,7 @@ class Information:
         )
         for user in row:
             embed.add_field(
-                name=f"{user['name']} with {user['upvotes']}",
+                name=f"{self.bot.get_user(user['userid']).mention} with {user['upvotes']}",
             )
         await ctx.send(embed=embed)
 
