@@ -205,8 +205,9 @@ class Information:
         embed = discord.Embed(title="Leaderboard", colour=0xFF8A00)
         for user in row:
             embed.add_field(
-                name=f"{self.bot.get_user(user['userid']).mention}",
+                name=f"**{self.bot.get_user(user['userid'])}**",
                 value=f"with {user['upvotes']}",
+                inline=False
             )
         await ctx.send(embed=embed)
 
