@@ -9,6 +9,7 @@ import random
 import json
 import shlex
 import gc
+import os
 
 from subprocess import Popen, PIPE
 from dhooks import Webhook
