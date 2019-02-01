@@ -231,7 +231,7 @@ class Information:
         else:
             dmmsg = await ctx.author.send("You have been entered into the Valentines Day Event!")
             await msg.delete()
-            hook = Webhook(self.config.santahook, is_async=True)
+            hook = Webhook(url=self.config.santahook, is_async=True)
             embed = Embed(
                 title="Someone entered the event!",
                 description=f"User: {ctx.author.mention}\nTag: {ctx.author.name}#{ctx.author.discriminator}\nID: {ctx.author.id}",
