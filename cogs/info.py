@@ -238,7 +238,7 @@ class Information:
                 color=0xDB1F1F,
                 timestamp=True,
             )
-            hook.send(embeds=embed)
+            hook.send(embeds=[embed])
             await asyncio.sleep(5)
             await dmmsg.delete()
 
