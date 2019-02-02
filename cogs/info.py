@@ -207,7 +207,7 @@ class Information:
             embed.add_field(
                 name=f"**{self.bot.get_user(user['userid'])}**",
                 value=f"with {user['upvotes']}",
-                inline=False
+                inline=False,
             )
         await ctx.send(embed=embed)
 
@@ -229,14 +229,15 @@ class Information:
             await ctx.author.send("Timed out..")
             await msg.delete()
         else:
-            dmmsg = await ctx.author.send("You have been entered into the Valentines Day Event!")
+            dmmsg = await ctx.author.send(
+                "You have been entered into the Valentines Day Event!"
+            )
             await msg.delete()
             hook = Webhook(url=self.config.santahook, is_async=True)
             embed = Embed(
                 title="Someone entered the event!",
                 description=f"User: {ctx.author.mention}\nTag: {ctx.author.name}#{ctx.author.discriminator}\nID: {ctx.author.id}",
                 color=0xDB1F1F,
-                timestamp=now
             )
             await hook.send(embeds=[embed])
             await hook.close
