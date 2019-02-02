@@ -240,7 +240,7 @@ class Information:
                 color=0xDB1F1F,
             )
             await hook.send(embeds=[embed])
-            await hook.close
+            await hook.close()
             await asyncio.sleep(5)
             await dmmsg.delete()
 
