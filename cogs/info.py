@@ -236,7 +236,7 @@ class Information:
                 title="Someone entered the event!",
                 description=f"User: {ctx.author.mention}\nTag: {ctx.author.name}#{ctx.author.discriminator}\nID: {ctx.author.id}",
                 color=0xDB1F1F,
-                timestamp=True
+                timestamp=now
             )
             await hook.send(embeds=[embed])
             await hook.close
