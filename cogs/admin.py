@@ -7,13 +7,18 @@ import io
 import datetime
 import random
 import json
+import shlex
+import gc
+import os
 
+from subprocess import Popen, PIPE
 from dhooks import Webhook
 from contextlib import redirect_stdout
 from copy import copy
 from typing import Union
 from utils import repo, default, http, dataIO
 from discord.ext import commands
+from utils.formats import TabularData, Plural
 
 
 class Admin:
@@ -320,6 +325,105 @@ class Admin:
             json.dump(content, file)
             file.truncate()
         await ctx.send(f"I have successfully blacklisted the id **{uid}**")
+
+    @commands.command()
+    @commands.check(repo.is_owner)
+    async def cogs(self, ctx):
+        """ Gives all loaded cogs """
+        mod = ", ".join(list(self.bot.cogs))
+        await ctx.send(f"The current modules are:\n```\n{mod}\n```")
+    
+    @commands.command(hidden=True)
+    @commands.check(repo.is_owner)
+    async def sql(self, ctx, *, query: str):
+        """Run some SQL."""
+        if ctx.author.id != 127452209070735361:
+            return
+
+        query = self.cleanup_code(query)
+
+        is_multistatement = query.count(";") > 1
+        if is_multistatement:
+            strategy = self.bot.db.execute
+        else:
+            strategy = self.bot.db.fetch
+
+        try:
+            start = time.perf_counter()
+            results = await strategy(query)
+            dt = (time.perf_counter() - start) * 1000.0
+        except Exception:
+            return await ctx.send(f"```py\n{traceback.format_exc()}\n```")
+
+        rows = len(results)
+        if is_multistatement or rows == 0:
+            return await ctx.send(f"`{dt:.2f}ms: {results}`")
+
+        headers = list(results[0].keys())
+        table = TabularData()
+        table.set_columns(headers)
+        table.add_rows(list(r.values()) for r in results)
+        render = table.render()
+
+        fmt = f"```\n{render}\n```\n*Returned {Plural(row=rows)} in {dt:.2f}ms*"
+        if len(fmt) > 2000:
+            fp = io.BytesIO(fmt.encode("utf-8"))
+            await ctx.send("Too many results...", file=discord.File(fp, "results.txt"))
+        else:
+            await ctx.send(fmt)
+
+    @commands.command()
+    @commands.check(repo.is_owner)
+    async def shell(self, ctx: commands.Context, *, command: str) -> None:
+        """ Run a shell command. """
+        if ctx.author.id != 127452209070735361:
+            return
+        def run_shell(command):
+            with Popen(command, stdout=PIPE, stderr=PIPE, shell=True) as proc:
+                return [std.decode("utf-8") for std in proc.communicate()]
+
+        command = self.cleanup_code(command)
+        argv = shlex.split(command)
+        stdout, stderr = await self.bot.loop.run_in_executor(None, run_shell, argv)
+        if stdout:
+            if len(stdout) >= 1500:
+                print(stdout)
+                return await ctx.send("Too big I'll print it instead")
+            await ctx.send(f"```\n{stdout}\n```")
+        if stderr:
+            if len(stderr) >= 1500:
+                print(stderr)
+                return await ctx.send("Too big I'll print it instead")
+            await ctx.send(f"```\n{stderr}\n```")
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.check(repo.is_owner)
+    async def speedup(self, ctx):
+        await ctx.message.add_reaction("a:loading:528744937794043934")
+        gc.collect()
+        del gc.garbage[:]
+        await ctx.message.remove_reaction("a:loading:528744937794043934", member=ctx.me)
+        await ctx.message.add_reaction(":done:513831607262511124")
+
+    @commands.command(hidden=True, aliases=["pull"])
+    @commands.check(repo.is_owner)
+    async def update(self, ctx, silently: bool = False):
+        """ Gets latest commits and applies them from git """
+
+        def run_shell(command):
+            with Popen(command, stdout=PIPE, stderr=PIPE, shell=True) as proc:
+                return [std.decode("utf-8") for std in proc.communicate()]
+
+        pull = await self.bot.loop.run_in_executor(
+            None, run_shell, "git pull origin master"
+        )
+        msg = await ctx.send(f"```css\n{pull}\n```")
+        for file in os.listdir("cogs"):
+            if file.endswith(".py"):
+                name = file[:-3]
+                self.bot.unload_extension(f"cogs.{name}")
+                self.bot.load_extension(f"cogs.{name}")
 
 
 def setup(bot):
