@@ -201,7 +201,6 @@ class Information:
     async def leaderboard(self, ctx):
         query = "SELECT * FROM artstats ORDER BY upvotes DESC LIMIT 10;"
         row = await self.bot.db.fetch(query)
-<<<<<<< HEAD
         embed = discord.Embed(
             title="Leaderboard",
             colour=0xFF8A00
@@ -285,7 +284,6 @@ class Information:
             await hook.close()
             await asyncio.sleep(5)
             await dmmsg.delete()
->>>>>>> upstream/master
 
 
 def setup(bot):
