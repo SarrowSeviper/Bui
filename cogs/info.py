@@ -11,14 +11,7 @@ from utils import repo, default
 
 
 class Information:
-    def __init__(self, bot):
-        self.bot = bot
-        self.config = default.get("config.json")
-        self.process = psutil.Process(os.getpid())
-
-    def get_bot_uptime(self, *, brief=False):
-        now = datetime.utcnow()
-        delta = now - self.bot.uptime
+    def __init__(self, bot)ta = now - self.bot.uptime
         hours, remainder = divmod(int(delta.total_seconds()), 3600)
         minutes, seconds = divmod(remainder, 60)
         days, hours = divmod(hours, 24)
@@ -200,7 +193,7 @@ class Information:
 
     @commands.command()
     async def leaderboard(self, ctx):
-        query = "SELECT * FROM artstats ORDER BY upvotes DESC LIMIT 3;"
+        query = "SELECT * FROM artstats ORDER BY upvotes DESC LIMIT 10;"
         row = await self.bot.db.fetch(query)
 <<<<<<< HEAD
         embed = discord.Embed(
