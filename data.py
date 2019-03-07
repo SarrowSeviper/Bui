@@ -1,9 +1,9 @@
+
 from utils import permissions, default
-import discord
+from discord.ext.commands import AutoShardedBot
+
 
 config = default.get("config.json")
-
-from discord.ext.commands import AutoShardedBot
 
 
 class Bot(AutoShardedBot):

@@ -5,7 +5,7 @@ import asyncio
 import discord
 
 
-class Role_Distribution:
+class Role_Distribution(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = default.get("config.json")
@@ -31,9 +31,12 @@ class Role_Distribution:
             return user == ctx.author and str(reaction.emoji) == "👍"
 
         await ctx.message.delete()
-        msg = await ctx.author.send(
-            f"**{ctx.author.name}**, by requesting this role, you are agreeing to our terms and conditions, Discord's Terms of Service, and Community Guideline. We are not liable if you are found that you are not within legal age to view NSFW content within your country.\n\nOur Terms of Service : <https://goo.gl/Mi4yEj>\nDiscord's Terms of Service: <https://discordapp.com/terms>\nDiscord's Community Guidelines: <https://discordapp.com/guidelines>\n\nIf you agree by all of the above, then please react with :thumbsup: below."
-        )
+        try:
+            msg = await ctx.author.send(
+                f"**{ctx.author.name}**, by requesting this role, you are agreeing to our terms and conditions, Discord's Terms of Service, and Community Guideline. We are not liable if you are found that you are not within legal age to view NSFW content within your country.\n\nOur Terms of Service : <https://goo.gl/Mi4yEj>\nDiscord's Terms of Service: <https://discordapp.com/terms>\nDiscord's Community Guidelines: <https://discordapp.com/guidelines>\n\nIf you agree by all of the above, then please react with :thumbsup: below."
+            )
+        except discord.Forbidden:
+            await ctx.send(f"I can't send messages to you, {ctx.author.name}!")
         await msg.add_reaction("👍")
         try:
             reaction, user = await self.bot.wait_for(
@@ -153,7 +156,7 @@ class Role_Distribution:
         await msg.delete()
 
     @iam.command(name="sketchdaily")
-    async def iam_event(self, ctx):
+    async def iam_sketchdaily(self, ctx):
         """
         - Gives the Sketchdaily role
         """

@@ -4,7 +4,7 @@ from utils import default
 import asyncio
 
 
-class Fun_Commands:
+class Fun_Commands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = default.get("config.json")

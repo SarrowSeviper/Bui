@@ -4,6 +4,7 @@ import psutil
 import os
 import asyncpg
 
+from discord.ext import commands
 from datetime import datetime
 from discord.ext.commands import errors
 from utils import default
@@ -19,12 +20,13 @@ async def send_cmd_help(ctx):
         await ctx.send(page)
 
 
-class Events:
+class Events(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = default.get("config.json")
         self.process = psutil.Process(os.getpid())
 
+    @commands.Cog.listener()
     async def on_command_error(self, ctx, err):
         if isinstance(err, errors.MissingRequiredArgument) or isinstance(err, errors.BadArgument):
             await send_cmd_help(ctx)
@@ -49,6 +51,7 @@ class Events:
         elif isinstance(err, errors.CommandNotFound):
             pass
 
+    @commands.Cog.listener()
     async def on_ready(self):
         if not hasattr(self.bot, 'uptime'):
             self.bot.uptime = datetime.utcnow()
@@ -56,6 +59,7 @@ class Events:
         print(f'Ready: {self.bot.user} | Servers: {len(self.bot.guilds)}')
         await self.bot.change_presence(activity=discord.Game(type=0, name=self.config.playing), status=discord.Status.online)
 
+    @commands.Cog.listener()
     async def on_member_join(self, member):
         if member.guild.id != 445647188685619232:
             return
@@ -67,6 +71,7 @@ class Events:
 
                 await joinleave.send(f"Welcome {member} ({member.id}) ({member.mention}) to the society!")
 
+    @commands.Cog.listener()
     async def on_member_remove(self, member):
         if member.guild.id != 445647188685619232:
             return
@@ -75,6 +80,7 @@ class Events:
 
             await joinleave.send(f"{member} ({member.id}) ({member.mention}) left the society..")
 
+    @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):
         if (reaction.message.channel.id == 445658065933434892 or reaction.message.channel.id == 445659536016277514 or reaction.message.channel.id == 510141164179947574) and (reaction.message.attachments or "http" in reaction.message.content) and not user.bot and user.id != reaction.message.author.id and reaction.emoji.id == 507362047059689472:
             query = "SELECT * FROM artstats WHERE userid = $1;"
@@ -91,6 +97,7 @@ class Events:
         else:
             pass
 
+    @commands.Cog.listener()
     async def on_reaction_remove(self, reaction, user):
         if (reaction.message.channel.id == 445658065933434892 or reaction.message.channel.id == 445659536016277514 or reaction.message.channel.id == 510141164179947574) and (reaction.message.attachments or "http" in reaction.message.content) and not user.bot and user.id != reaction.message.author.id and reaction.emoji.id == 507362047059689472:
             query = "SELECT * FROM artstats WHERE userid = $1;"

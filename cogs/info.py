@@ -10,7 +10,7 @@ from datetime import datetime
 from utils import repo, default
 
 
-class Information:
+class Information(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.config = default.get("config.json")
