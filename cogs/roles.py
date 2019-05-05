@@ -178,6 +178,75 @@ class Role_Distribution(commands.Cog):
         await asyncio.sleep(5)
         await msg.delete()
 
+    @iam.command(name="artist")
+    async def iam_sketchdaily(self, ctx):
+        """
+        - Gives the Artist role
+        """
+
+        message = []
+        for role in ctx.guild.roles:
+            if role.name == "Artist":
+                message.append(role.id)
+        try:
+            therole = discord.Object(id=message[0])
+        except:
+            return
+
+        await ctx.author.add_roles(therole)
+        await ctx.message.delete()
+        msg = await ctx.send(
+            f"**{ctx.author.name}**, I have given you the **Artist** role!"
+        )
+        await asyncio.sleep(5)
+        await msg.delete()
+
+    @iam.command(name="producer")
+    async def iam_sketchdaily(self, ctx):
+        """
+        - Gives the Producer role
+        """
+
+        message = []
+        for role in ctx.guild.roles:
+            if role.name == "Producer":
+                message.append(role.id)
+        try:
+            therole = discord.Object(id=message[0])
+        except:
+            return
+
+        await ctx.author.add_roles(therole)
+        await ctx.message.delete()
+        msg = await ctx.send(
+            f"**{ctx.author.name}**, I have given you the **Producer** role!"
+        )
+        await asyncio.sleep(5)
+        await msg.delete()
+
+    @iam.command(name="writer")
+    async def iam_sketchdaily(self, ctx):
+        """
+        - Gives the Writer role
+        """
+
+        message = []
+        for role in ctx.guild.roles:
+            if role.name == "Writer":
+                message.append(role.id)
+        try:
+            therole = discord.Object(id=message[0])
+        except:
+            return
+
+        await ctx.author.add_roles(therole)
+        await ctx.message.delete()
+        msg = await ctx.send(
+            f"**{ctx.author.name}**, I have given you the **Writer** role!"
+        )
+        await asyncio.sleep(5)
+        await msg.delete()
+
     @commands.group()
     async def iamnot(self, ctx):
         """
