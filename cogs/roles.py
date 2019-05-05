@@ -396,6 +396,74 @@ class Role_Distribution(commands.Cog):
         await asyncio.sleep(5)
         await msg.delete()
 
+    @iamnot.command(name="artist")
+    async def iamnot_sketchdaily(self, ctx):
+        """
+        - Removes the Artist role
+        """
+
+        message = []
+        for role in ctx.guild.roles:
+            if role.name == "Artist":
+                message.append(role.id)
+        try:
+            therole = discord.Object(id=message[0])
+        except:
+            return
+
+        await ctx.author.remove_roles(therole)
+        await ctx.message.delete()
+        msg = await ctx.send(
+            f"**{ctx.author.name}**, I have removed you from the **Artist** role!"
+        )
+        await asyncio.sleep(5)
+        await msg.delete()
+
+    @iamnot.command(name="producer")
+    async def iamnot_sketchdaily(self, ctx):
+        """
+        - Removes the Producer role
+        """
+
+        message = []
+        for role in ctx.guild.roles:
+            if role.name == "Producer":
+                message.append(role.id)
+        try:
+            therole = discord.Object(id=message[0])
+        except:
+            return
+
+        await ctx.author.remove_roles(therole)
+        await ctx.message.delete()
+        msg = await ctx.send(
+            f"**{ctx.author.name}**, I have removed you from the **Producer** role!"
+        )
+        await asyncio.sleep(5)
+        await msg.delete()
+
+    @iamnot.command(name="writer")
+    async def iamnot_sketchdaily(self, ctx):
+        """
+        - Removes the Writer role
+        """
+
+        message = []
+        for role in ctx.guild.roles:
+            if role.name == "Writer":
+                message.append(role.id)
+        try:
+            therole = discord.Object(id=message[0])
+        except:
+            return
+
+        await ctx.author.remove_roles(therole)
+        await ctx.message.delete()
+        msg = await ctx.send(
+            f"**{ctx.author.name}**, I have removed you from the **Writer** role!"
+        )
+        await asyncio.sleep(5)
+        await msg.delete()
 
 def setup(bot):
     bot.add_cog(Role_Distribution(bot))
