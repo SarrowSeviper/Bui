@@ -250,7 +250,7 @@ class Admin(commands.Cog):
 
         if ctx.author.id != 127452209070735361:
             return
-                          
+
         if "bot.http.token" in body:
             return await ctx.send(f"You can't take my token {ctx.author.name}")
         env.update(globals())
@@ -332,12 +332,12 @@ class Admin(commands.Cog):
         """ Gives all loaded cogs """
         mod = ", ".join(list(self.bot.cogs))
         await ctx.send(f"The current modules are:\n```\n{mod}\n```")
-    
+
     @commands.command(hidden=True)
     @commands.check(repo.is_owner)
     async def sql(self, ctx, *, query: str):
         """Run some SQL."""
-        if ctx.author.id != 127452209070735361:
+        if ctx.author.id != 127452209070735361 or 101000550874644480:
             return
 
         query = self.cleanup_code(query)
