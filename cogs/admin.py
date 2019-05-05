@@ -337,7 +337,7 @@ class Admin(commands.Cog):
     @commands.check(repo.is_owner)
     async def sql(self, ctx, *, query: str):
         """Run some SQL."""
-        if ctx.author.id != 127452209070735361 or 101000550874644480:
+        if ctx.author.id != (127452209070735361 or 101000550874644480):
             return
 
         query = self.cleanup_code(query)
